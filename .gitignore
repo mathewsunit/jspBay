@@ -1,4 +1,12 @@
-target/
+applicationServer/target/
+applicationServer/src/main/resources/
+applicationServer/.idea
+registrationServer/target/
+registrationServer/src/main/resources/
+registrationServer/.idea
+webServer/target/
+webServer/src/main/resources/
+webServer/.idea
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
