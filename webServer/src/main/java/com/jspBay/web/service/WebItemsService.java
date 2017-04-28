@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 @Service
 public class WebItemsService {
 
-    public static final String APPLICATION_SERVICE_URL = "http://APPLICATION-SERVICE";
+    public static final String APPLICATION_SERVICE_URL = "http://APPLICATION-SERVER";
 
     @Autowired
     @LoadBalanced
