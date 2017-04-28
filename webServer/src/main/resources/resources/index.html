@@ -31,14 +31,36 @@
 </head>
 
 <body ng-app="jspAuction" ng-cloak class="ng-cloak">
-<div ng-controller="navigation as nav" class="container">
-    <ul class="nav nav-pills" role="tablist">
-        <li ng-class="{active:nav.tab('home')}"><a href="/">home</a></li>
-        <li ng-class="{active:nav.tab('message')}"><a href="/message">message</a></li>
-        <li ng-class="{active:nav.tab('navigation')}"><a href="/login">login</a></li>
-        <li ng-show="nav.authenticated()"><a href="" ng-click="nav.logout()">logout</a></li>
-    </ul>
-</div>
+
+    <nav ng-controller="navigation as nav" class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">JSPBay</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li ng-show="nav.authenticated()" class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{nav.username()}}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Bids</a></li>
+                        </ul>
+                    </li>
+                    <li ng-show="!nav.authenticated()"><a href="#/">Signup</a></li>
+                    <li><a href="#/about">About</a></li>
+                    <li><a href="#/services">Services</a></li>
+                    <li><a href="#/contact">Contact</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="nav.authenticated()"><a href="/login?logout">Logout</a></li>
+                    <li ng-show="!nav.authenticated()"><a href="#/">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
 <div ng-view class="container"></div>
 </body>
 </html>

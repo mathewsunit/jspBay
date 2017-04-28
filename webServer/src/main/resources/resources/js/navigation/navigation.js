@@ -6,6 +6,9 @@ angular.module('navigation', ['ngRoute', 'secure-rest-angular']).controller(
 			var self = this;
 
 			self.credentials = {};
+			self.username = function() {
+                return Login.username;
+            }
 
 			self.tab = function(route) {
 				return $route.current && route === $route.current.controller;

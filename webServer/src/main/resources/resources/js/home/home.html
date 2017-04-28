@@ -1,4 +1,83 @@
-<h1>Welcome</h1>
 <div>
+    <div class="container-fluid" style="text-align:center;">
+        <h1>Welcome</h1>
+        <br/>
+        <div class="input-group" style="width:250px;text-align:center;margin:auto;">
+            <input type="text" class="form-control"/>
+            <span class="input-group-addon">
+		        <i class="glyphicon glyphicon-search"></i>
+		    </span>
+        </div>
+        <br/>
+        <div class="col-md-6" id="my_items">
+            <h2 style="text-align:center;">My Items</h2>
+            <div class="col-md-6" id="sold">
+                <h3 style="text-align:center;">Sold</h3>
+                <table class="table-striped table_1" align="center">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                    <tr>
+                        <td>Laptop</td>
+                        <td>$500</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6" id="on_sale">
+                <h3 style="text-align:center;">On Sale</h3>
+                <table class="table-striped table_1" align="center">
+                    <tr>
+                        <th>Product</th>
+                        <th>Bid</th>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>$200</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6" id="my_bids">
+            <h2 style="text-align:center;">My Bids</h2>
+            <div class="col-md-6" id="sold">
+                <h3 style="text-align:center;">Active</h3>
+                <table class="table-striped table_1" align="center">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>State</th>
+                    </tr>
+                    <tr>
+                        <td>Water</td>
+                        <td>$200</td>
+                        <td>Beaten</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6" id="on_sale">
+                <h3 style="text-align:center;">Closed</h3>
+                <table class="table-striped table_1" align="center">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>State</th>
+                    </tr>
+                    <tr>
+                        <td>Firestamp</td>
+                        <td>$20</td>
+                        <td>Beaten</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <div class="btn btn-primary">Post Item</div>
+    </div>
+    <!--
     <p>Hello {{controller.user}}!</p>
+    -->
+
 </div>

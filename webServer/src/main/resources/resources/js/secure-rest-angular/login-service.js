@@ -40,6 +40,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
      * access to the additional information received when the failure handler is invoked (status, etc.).
      */
     authenticated: false,
+    username: "",
     loginPath: '/login',
     logoutPath: '/logout',
     homePath: '/',
@@ -66,6 +67,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
             })
             .then(function(response) {
               if (response.status == 200) {
+                username = credentials.username;
                 auth.authenticated = true;
               } else {
                 auth.authenticated = false;
