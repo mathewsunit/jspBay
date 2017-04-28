@@ -127,7 +127,7 @@ public class Item {
         this.created = now;
         this.expiring = now;
         this.itemStatus = ItemStatus.ONSALE;
-        this.name = "Lolzz";
+        this.name = "Lolzz"+String.valueOf(now);
     }
 
     public Item(){
