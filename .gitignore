@@ -5,7 +5,7 @@ registrationServer/target/
 registrationServer/src/main/resources/
 registrationServer/.idea
 webServer/target/
-webServer/src/main/resources/
+webServer/src/main/resources/web-server.yml
 webServer/.idea
 pom.xml.tag
 pom.xml.releaseBackup
