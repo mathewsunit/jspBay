@@ -1,6 +1,6 @@
-package com.jspBay.web.DTO;
+package com.jspBay.application.DTO;
 
-import com.jspBay.web.enums.BidStatus;
+import com.jspBay.application.enums.BidStatus;
 
 import javax.validation.constraints.NotNull;
 
@@ -46,6 +46,4 @@ public class BidDTO {
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
     }
-
-    public BidDTO(){};
 }

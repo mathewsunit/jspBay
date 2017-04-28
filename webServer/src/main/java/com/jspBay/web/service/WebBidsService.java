@@ -2,12 +2,9 @@ package com.jspBay.web.service;
 
 import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.exceptions.BidNotFoundException;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +20,7 @@ import java.util.logging.Logger;
 @Service
 public class WebBidsService {
 
-    public static final String APPLICATION_SERVICE_URL = "http://APPLICATION-SERVICE";
+    public static final String APPLICATION_SERVICE_URL = "http://APPLICATION-SERVER";
 
     @Autowired
     @LoadBalanced
@@ -49,19 +46,6 @@ public class WebBidsService {
         // happens afterwards.
         logger.warning("The RestTemplate request factory is "
                 + restTemplate.getRequestFactory().getClass());
-    }
-
-    /*
-     * Add HTTP Authorization header, using Basic-Authentication to send user-credentials.
-     */
-    private static HttpHeaders getHeaders(){
-        String plainCredentials="user:password";
-        String base64Credentials = new String(Base64.encodeBase64(plainCredentials.getBytes()));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + base64Credentials);
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        return headers;
     }
 
     public BidDTO findByNumber(String bidNumber) {

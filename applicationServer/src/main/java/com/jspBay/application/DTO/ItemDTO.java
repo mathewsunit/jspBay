@@ -1,7 +1,7 @@
-package com.jspBay.web.DTO;
+package com.jspBay.application.DTO;
 
 
-import com.jspBay.web.enums.ItemStatus;
+import com.jspBay.application.enums.ItemStatus;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -72,6 +72,4 @@ public class ItemDTO {
         this.expiring = expiring;
         this.itemStatus = itemStatus;
     }
-
-    public ItemDTO(){};
 }

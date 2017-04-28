@@ -51,7 +51,7 @@ public class UserController {
 
         logger.info("user-service byUserName() invoked: " + userName);
         User user = userRepository.findOneByUserName(userName);
-        logger.info("items-service byNumber() found: " + user);
+        logger.info("user-service byNumber() found: " + user);
 
         if (user == null)
             throw new UserNotFoundException(userName);

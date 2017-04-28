@@ -67,7 +67,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
             })
             .then(function(response) {
               if (response.status == 200) {
-                username = credentials.username;
+                auth.username = credentials.username;
                 auth.authenticated = true;
               } else {
                 auth.authenticated = false;
