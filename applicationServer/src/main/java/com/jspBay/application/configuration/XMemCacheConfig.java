@@ -30,7 +30,7 @@ This configuration set up SSM artifacts/beans to support SSM cache annotations o
  * http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/EnableCaching.html
  */
 @PropertySource("classpath:cache.properties")
-//@Configuration
+@Configuration
 @EnableCaching
 @EnableAspectJAutoProxy
 @ImportResource("classpath:simplesm-context.xml")

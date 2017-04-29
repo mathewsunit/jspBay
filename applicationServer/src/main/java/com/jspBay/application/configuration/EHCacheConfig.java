@@ -8,12 +8,11 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.interceptor.SimpleKeyGenerator;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by sunit on 4/27/2017.
  */
-@Configuration
+//@Configuration
 @EnableCaching
 public class EHCacheConfig extends CachingConfigurerSupport {
 

@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 
 @Entity
+@Table(name = "user")
 public class User extends ResourceSupport implements Serializable {
 
     public User() {}
@@ -25,7 +26,7 @@ public class User extends ResourceSupport implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
     @Column(name = "id", nullable = false)
-    private int id;
+    private Long id;
 
     @Column(name = "user_name", unique = true, nullable = false, length=127)
     private String userName;
@@ -36,11 +37,11 @@ public class User extends ResourceSupport implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public int getUserId() {
+    public Long getUserId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

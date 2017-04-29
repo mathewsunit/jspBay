@@ -14,6 +14,7 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "bid")
 @Check(constraints = "bid_status = 'ACCEPTED' or bid_status = 'REJECTED' or bid_status = 'LEADING'")
 public class Bid extends ResourceSupport implements Serializable {
 

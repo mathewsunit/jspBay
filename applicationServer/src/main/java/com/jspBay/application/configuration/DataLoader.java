@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataLoader implements ApplicationRunner {
 
-    private UserRepository userRepository;
-    private ItemRepository itemRepository;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
     @Autowired
     public DataLoader(UserRepository userRepository,ItemRepository itemRepository) {

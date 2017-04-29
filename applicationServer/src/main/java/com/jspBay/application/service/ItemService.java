@@ -6,6 +6,7 @@ import com.jspBay.application.domain.User;
 import com.jspBay.application.exceptions.ItemNotFoundException;
 import com.jspBay.application.repository.ItemRepository;
 import com.jspBay.application.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +24,14 @@ public class ItemService {
 
     protected Logger logger = Logger.getLogger(ItemService.class.getName());
 
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private ItemRepository itemRepository;
 
     public List<ItemDTO> bySeller(String partialName) {
-        logger.info("items-service bySeller() invoked: "
-                + itemRepository.getClass().getName() + " for "
+        logger.info("items-service bySeller() invoked for "
                 + partialName);
 
         User user = userRepository.findOneByUserName(partialName);

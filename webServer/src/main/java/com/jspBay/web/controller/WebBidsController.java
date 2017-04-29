@@ -5,7 +5,6 @@ import com.jspBay.web.service.WebBidsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,12 +47,11 @@ public class WebBidsController {
     }
 
     @RequestMapping("/bids/bidder/{text}")
-    public ResponseEntity<List<BidDTO>> ownerSearch(Model model, @PathVariable("text") String name) {
+    public ResponseEntity<List<BidDTO>> ownerSearch(@PathVariable("text") String name) {
         logger.info("WebBidsController byBidder() invoked: " + name);
 
         List<BidDTO> bids = bidsService.byBidderContains(name);
         logger.info("WebBidsController byBidder() found: " + bids);
-        model.addAttribute("search", name);
         if (bids != null)
             return new ResponseEntity<>(bids, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

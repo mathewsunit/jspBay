@@ -14,6 +14,7 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "item")
 @Check(constraints = "item_status = 'REMOVED' or game_status = 'ONSALE' or game_status = 'SOLD'")
 public class Item extends ResourceSupport implements Serializable {
 
@@ -112,7 +113,6 @@ public class Item extends ResourceSupport implements Serializable {
     public void setCreated(Date created) {
         this.created = created;
     }
-
 
     public String getName() {
         return name;

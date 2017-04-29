@@ -1,7 +1,6 @@
 package com.jspBay.application.controller;
 
 import com.jspBay.application.DTO.BidDTO;
-import com.jspBay.application.repository.BidRepository;
 import com.jspBay.application.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +17,9 @@ import java.util.logging.Logger;
 public class BidController {
 
     protected Logger logger = Logger.getLogger(BidController.class.getName());
-    protected BidRepository bidRepository;
 
     @Autowired
     protected BidService bidService;
-
-    @Autowired
-    public BidController(BidRepository bidRepository) {
-        this.bidRepository = bidRepository;
-    }
 
     @RequestMapping("/bids/{bidNumber}")
     public BidDTO byNumber(@PathVariable("bidNumber") String bidNumber) {
