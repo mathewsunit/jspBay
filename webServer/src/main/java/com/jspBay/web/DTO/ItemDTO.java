@@ -25,6 +25,8 @@ public class ItemDTO {
     @NotNull
     private ItemStatus itemStatus;
 
+    private BidDTO currentBid;
+
     public ItemStatus getItemStatus() {
         return itemStatus;
     }

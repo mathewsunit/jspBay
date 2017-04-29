@@ -39,8 +39,7 @@ public class ItemController {
 
     @RequestMapping("/items/seller/{name}")
     public List<ItemDTO> bySeller(@PathVariable("name") String partialName) {
-        logger.info("ItemController bySeller() invoked for "
-                + partialName);
+        logger.info("ItemController bySeller() invoked for " + partialName);
         return itemService.bySeller(partialName);
     }
 }

@@ -17,6 +17,8 @@ public class BidDTO {
     @NotNull
     private BidStatus bidStatus;
 
+    private ItemDTO item;
+
     public BidStatus getBidStatus() {
         return bidStatus;
     }
@@ -47,5 +49,16 @@ public class BidDTO {
         this.bidStatus = bidStatus;
     }
 
-    public BidDTO(){};
+    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {
+        this.itemId = itemId;
+        this.bidAmount = bidAmount;
+        this.bidStatus = bidStatus;
+        this.item = item;
+    }
+
+    public ItemDTO getItem() {
+        return item;
+    }
+
+    public BidDTO(){}
 }

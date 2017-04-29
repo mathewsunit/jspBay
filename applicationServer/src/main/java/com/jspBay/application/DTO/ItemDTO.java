@@ -1,6 +1,8 @@
 package com.jspBay.application.DTO;
 
 
+import com.jspBay.application.domain.Bid;
+import com.jspBay.application.domain.Item;
 import com.jspBay.application.enums.ItemStatus;
 
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,12 @@ public class ItemDTO {
     private Date expiring;
     @NotNull
     private ItemStatus itemStatus;
+
+    private BidDTO currentBid;
+
+    public BidDTO getCurrentBid() {
+        return currentBid;
+    }
 
     public ItemStatus getItemStatus() {
         return itemStatus;
@@ -65,11 +73,17 @@ public class ItemDTO {
         this.expiring = expiring;
     }
 
-    public ItemDTO(Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus) {
+    public ItemDTO(Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, Bid currentBid) {
         this.itemCostMin = itemCostMin;
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.expiring = expiring;
         this.itemStatus = itemStatus;
+        this.currentBid = new BidDTO(currentBid);
     }
+
+    public ItemDTO(Item item) {
+        this(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), item.getCurrentBid());
+    }
+
 }

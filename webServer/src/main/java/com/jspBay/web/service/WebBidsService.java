@@ -5,6 +5,7 @@ import com.jspBay.web.exceptions.BidNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -60,8 +61,8 @@ public class WebBidsService {
         BidDTO[] bid = null;
 
         try {
-            bid = restTemplate.getForObject(serviceUrl
-                    + "/bid/bidder/{name}", BidDTO[].class, name);
+            bid = restTemplate.getForObject(serviceUrl + "/bids/bidder/{name}", BidDTO[].class, name);
+
         } catch (HttpClientErrorException e) { // 404
             // Nothing found
         }

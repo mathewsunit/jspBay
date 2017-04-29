@@ -15,6 +15,7 @@ import java.util.List;
 public interface ItemRepository extends CrudRepository<Item, Long> {
     Item findOneById(Long id);
 
+    @Query("SELECT i FROM Item i JOIN i.seller JOIN fetch currentBid i.currentBid LEFT OUTER JOIN Bid b2 ON (b2.item = i AND (b1.date < b2.date OR b1.date = b2.date AND b1.id < b2.id)) WHERE b2.id IS NULL AND i.seller = ?1")
     List<Item> findBySeller(User seller);
 
     @Query("SELECT count(*) from Item")

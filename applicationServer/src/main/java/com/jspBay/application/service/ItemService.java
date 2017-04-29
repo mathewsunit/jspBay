@@ -34,9 +34,7 @@ public class ItemService {
     }
 
     public List<ItemDTO> bySeller(String partialName) {
-        logger.info("items-service bySeller() invoked: "
-                + itemRepository.getClass().getName() + " for "
-                + partialName);
+        logger.info("items-service bySeller() invoked: " + itemRepository.getClass().getName() + " for " + partialName);
 
         User user = userRepository.findOneByUserName(partialName);
         if(null == user){
@@ -49,10 +47,10 @@ public class ItemService {
         if (items == null || items.size() == 0)
             throw new ItemNotFoundException(partialName);
         else {
-            for(Item item:items){
-                ItemDTO itemDTO = new ItemDTO(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus());
+            for(Item item:items) {
+                ItemDTO itemDTO = new ItemDTO(item);
                 itemsDTO.add(itemDTO);
-            };
+            }
             return itemsDTO;
         }
     }
@@ -66,7 +64,7 @@ public class ItemService {
         if (item == null)
             throw new ItemNotFoundException(itemNumber);
         else {
-            ItemDTO itemDTO = new ItemDTO(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus());
+            ItemDTO itemDTO = new ItemDTO(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), null);
             return itemDTO;
         }
     }

@@ -1,5 +1,6 @@
 package com.jspBay.application.DTO;
 
+import com.jspBay.application.domain.Bid;
 import com.jspBay.application.enums.BidStatus;
 
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,8 @@ public class BidDTO {
     private Long bidAmount;
     @NotNull
     private BidStatus bidStatus;
+
+    private ItemDTO item;
 
     public BidStatus getBidStatus() {
         return bidStatus;
@@ -41,9 +44,22 @@ public class BidDTO {
         this.itemId = itemId;
     }
 
+    public ItemDTO getItem() {
+        return item;
+    }
+
     public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus) {
+        this(itemId, bidAmount, bidStatus, null);
+    }
+
+    public BidDTO(Bid bid) {
+        this(bid.getItem().getId(), bid.getValue(), bid.getBidStatus(), null);
+    }
+
+    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {
         this.itemId = itemId;
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
+        this.item = item;
     }
 }

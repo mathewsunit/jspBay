@@ -1,6 +1,7 @@
 package com.jspBay.application.service;
 
 import com.jspBay.application.DTO.BidDTO;
+import com.jspBay.application.DTO.ItemDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.User;
 import com.jspBay.application.exceptions.BidNotFoundException;
@@ -54,13 +55,10 @@ public class BidService {
     }
 
     public List<BidDTO> byBidder(@PathVariable("name") String partialName) {
-        logger.info("bids-service byBidder() invoked for "
-                + partialName);
-
+        logger.info("bids-service byBidder() invoked for " + partialName);
         User user = userRepository.findOneByUserName(partialName);
-        if(null == user){
+        if(user == null)
             throw new BidNotFoundException(partialName);
-        }
 
         List<Bid> bids = bidRepository.findByBidder(user);
         logger.info("bids-service byBidder() found: " + bids);
@@ -69,8 +67,8 @@ public class BidService {
             throw new BidNotFoundException(partialName);
         else {
             List<BidDTO> bidDTOList = new ArrayList<>();
-            for(Bid bid:bids){
-                BidDTO bidDTO = new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus());
+            for(Bid bid:bids) {
+                BidDTO bidDTO = new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus(), new ItemDTO(bid.getItem()));
                 bidDTOList.add(bidDTO);
             }
             return bidDTOList;

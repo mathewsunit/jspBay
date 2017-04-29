@@ -60,8 +60,7 @@ public class WebItemsService {
         ItemDTO[] item = null;
 
         try {
-            item = restTemplate.getForObject(serviceUrl
-                    + "/items/seller/{name}", ItemDTO[].class, name);
+            item = restTemplate.getForObject(serviceUrl + "/items/seller/{name}", ItemDTO[].class, name);
         } catch (HttpClientErrorException e) { // 404
             // Nothing found
         }

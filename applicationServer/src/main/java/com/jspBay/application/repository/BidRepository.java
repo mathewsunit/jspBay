@@ -21,6 +21,8 @@ public interface BidRepository extends CrudRepository<Bid, Long> {
     Bid findOneByItemAndBidStatus(Item item, BidStatus bidStatus);
     List<Bid> findByItem(Item item);
     int countByItem(Item item);
+
+    @Query("SELECT b from Bid b JOIN FETCH b.item JOIN b.bidder u WHERE u = ?1")
     List<Bid> findByBidder(User user);
 
     @Query("SELECT count(*) from Bid")

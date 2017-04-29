@@ -11,36 +11,38 @@
         <br/>
         <div class="col-md-6" id="my_items">
             <h2 style="text-align:center;">My Items</h2>
-            <div class="col-md-6" id="sold">
+            <div class="col-md-6" id="my_sold">
                 <h3 style="text-align:center;">Sold</h3>
                 <table class="table-striped table_1" align="center">
                     <tr>
                         <th>Product</th>
                         <th>Price</th>
                     </tr>
-                    <tr ng-repeat="item in soldarray">
+                    <tr ng-repeat="item in soldItems">
                         <td>{{item.itemName}}</td>
                         <td>{{item.itemStatus}}</td>
                     </tr>
+                    <tr ng-hide="soldItems.length"><td colspan="2"> No items sold yet!</td></tr>
                 </table>
             </div>
-            <div class="col-md-6" id="on_sale">
+            <div class="col-md-6" id="my_on_sale">
                 <h3 style="text-align:center;">On Sale</h3>
                 <table class="table-striped table_1" align="center">
                     <tr>
                         <th>Product</th>
                         <th>Bid</th>
                     </tr>
-                    <tr ng-repeat="item in onsalearray">
+                    <tr ng-repeat="item in onSaleItems">
                         <td>{{item.itemName}}</td>
                         <td>{{item.itemStatus}}</td>
                     </tr>
+                    <tr ng-hide="onSaleItems.length"><td colspan="2"> No items sold yet!</td></tr>
                 </table>
             </div>
         </div>
         <div class="col-md-6" id="my_bids">
             <h2 style="text-align:center;">My Bids</h2>
-            <div class="col-md-6" id="sold">
+            <div class="col-md-6" id="active_bids">
                 <h3 style="text-align:center;">Active</h3>
                 <table class="table-striped table_1" align="center">
                     <tr>
@@ -48,14 +50,15 @@
                         <th>Price</th>
                         <th>State</th>
                     </tr>
-                    <tr>
-                        <td>Water</td>
-                        <td>$200</td>
-                        <td>Beaten</td>
+                    <tr ng-repeat="bid in activeBids">
+                        <td>{{bid.item.itemName}}</td>
+                        <td>{{bid.bidAmount}}</td>
+                        <td>{{bid.bidStatus}}</td>
                     </tr>
+                    <tr ng-hide="activeBids.length"><td colspan="3"> No items sold yet!</td></tr>
                 </table>
             </div>
-            <div class="col-md-6" id="on_sale">
+            <div class="col-md-6" id="closed_bids">
                 <h3 style="text-align:center;">Closed</h3>
                 <table class="table-striped table_1" align="center">
                     <tr>
@@ -63,11 +66,12 @@
                         <th>Price</th>
                         <th>State</th>
                     </tr>
-                    <tr>
-                        <td>Firestamp</td>
-                        <td>$20</td>
-                        <td>Beaten</td>
+                    <tr ng-repeat="bid in closedBids">
+                        <td>{{bid.item.itemName}}</td>
+                        <td>{{bid.bidAmount}}</td>
+                        <td>{{bid.bidStatus}}</td>
                     </tr>
+                    <tr ng-hide="closedBids.length"><td colspan="3"> No items sold yet!</td></tr>
                 </table>
             </div>
         </div>
@@ -76,8 +80,5 @@
         <br/>
         <div class="btn btn-primary">Post Item</div>
     </div>
-    <!--
-    <p>Hello {{controller.user}}!</p>
-    -->
 
 </div>
