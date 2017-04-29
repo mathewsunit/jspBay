@@ -27,9 +27,6 @@ public class Item {
     @JoinColumn(name = "buyer_id", nullable = false)
     private User buyer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="bid")
-    private Bid currentBid;
-
     @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;
 
@@ -114,10 +111,6 @@ public class Item {
 
     public String getName() {
         return name;
-    }
-
-    public Bid getCurrentBid() {
-        return currentBid;
     }
 
     public void setName(String name) {

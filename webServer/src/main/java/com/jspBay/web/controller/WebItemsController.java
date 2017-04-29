@@ -40,7 +40,7 @@ public class WebItemsController {
         logger.info("WebItemsController byNumber() invoked: " + itemNumber);
         ItemDTO item = itemsService.findByNumber(itemNumber);
         logger.info("WebItemsController byNumber() found: " + item);
-        if(null != item){
+        if(null != item) {
             return new ResponseEntity<>(item, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

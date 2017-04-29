@@ -17,6 +17,8 @@ public class BidDTO {
     private Long bidAmount;
     @NotNull
     private BidStatus bidStatus;
+    @NotNull
+    private UserDTO bidder;
 
     private ItemDTO item;
 
@@ -48,12 +50,22 @@ public class BidDTO {
         return item;
     }
 
+    public UserDTO getBidder() {
+        return bidder;
+    }
+
     public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus) {
         this(itemId, bidAmount, bidStatus, null);
     }
 
     public BidDTO(Bid bid) {
+        this(bid, false);
+    }
+
+    public BidDTO(Bid bid, boolean shouldGetBidder) {
         this(bid.getItem().getId(), bid.getValue(), bid.getBidStatus(), null);
+        if(shouldGetBidder)
+            this.bidder = new UserDTO(bid.getBidder());
     }
 
     public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {

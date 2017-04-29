@@ -15,6 +15,8 @@ public class ItemDTO {
 
 
     @NotNull
+    private Long itemId;
+    @NotNull
     private Long itemCostMin;
     @NotNull
     private String itemName;
@@ -26,6 +28,8 @@ public class ItemDTO {
     private ItemStatus itemStatus;
 
     private BidDTO currentBid;
+
+    private boolean canUserBid;
 
     public ItemStatus getItemStatus() {
         return itemStatus;
@@ -71,7 +75,16 @@ public class ItemDTO {
         return currentBid;
     }
 
-    public ItemDTO(Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid) {
+    public boolean isCanUserBid() {
+        return canUserBid;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid) {
+        this.itemId = itemId;
         this.itemCostMin = itemCostMin;
         this.itemName = itemName;
         this.itemDesc = itemDesc;

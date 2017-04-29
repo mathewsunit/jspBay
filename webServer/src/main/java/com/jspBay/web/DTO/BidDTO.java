@@ -15,6 +15,8 @@ public class BidDTO {
     @NotNull
     private Long bidAmount;
     @NotNull
+    private UserDTO bidder;
+    @NotNull
     private BidStatus bidStatus;
 
     private ItemDTO item;
@@ -41,6 +43,10 @@ public class BidDTO {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    public UserDTO getBidder() {
+        return bidder;
     }
 
     public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus) {

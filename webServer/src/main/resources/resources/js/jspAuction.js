@@ -40,6 +40,14 @@ angular
 						templateUrl : 'js/navigation/login.html',
 						controller : 'navigation',
 						controllerAs : 'controller'
+					}).when('/item/:itemId', {
+                        templateUrl : 'js/item/item.html',
+                        controller : 'item',
+                        controllerAs : 'controller'
+                    }).when('/item/bid/:itemId', {
+                        templateUrl : 'js/item/bid.html',
+                        controller : 'item',
+                        controllerAs : 'controller'
 					}).otherwise('/');
 
                     $httpProvider.interceptors.push('myCSRF');

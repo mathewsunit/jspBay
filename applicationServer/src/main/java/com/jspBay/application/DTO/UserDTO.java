@@ -1,5 +1,7 @@
 package com.jspBay.application.DTO;
 
+import com.jspBay.application.domain.User;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -38,5 +40,9 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserDTO(User user) {
+        this.userName = user.getUserName();
     }
 }

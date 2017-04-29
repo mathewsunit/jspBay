@@ -1,9 +1,12 @@
 package com.jspBay.application.service;
 
+import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
+import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
 import com.jspBay.application.domain.User;
 import com.jspBay.application.exceptions.ItemNotFoundException;
+import com.jspBay.application.repository.BidRepository;
 import com.jspBay.application.repository.ItemRepository;
 import com.jspBay.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +29,13 @@ public class ItemService {
 
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final BidRepository bidRepository;
 
     @Autowired
-    public ItemService(UserRepository userRepo, ItemRepository itemRepo) {
+    public ItemService(UserRepository userRepo, ItemRepository itemRepo, BidRepository bidRepository) {
         this.userRepository = userRepo;
         this.itemRepository = itemRepo;
+        this.bidRepository = bidRepository;
     }
 
     public List<ItemDTO> bySeller(String partialName) {
@@ -48,7 +53,8 @@ public class ItemService {
             throw new ItemNotFoundException(partialName);
         else {
             for(Item item:items) {
-                ItemDTO itemDTO = new ItemDTO(item);
+                List<Bid> bids = bidRepository.findFirstByItemOrderByCreatedDesc(item);
+                ItemDTO itemDTO = new ItemDTO(item, bids.size() == 1 ? new BidDTO(bids.get(0)) : null);
                 itemsDTO.add(itemDTO);
             }
             return itemsDTO;
@@ -64,7 +70,8 @@ public class ItemService {
         if (item == null)
             throw new ItemNotFoundException(itemNumber);
         else {
-            ItemDTO itemDTO = new ItemDTO(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), null);
+            List<Bid> bids = bidRepository.findFirstByItemOrderByCreatedDesc(item);
+            ItemDTO itemDTO = new ItemDTO(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), bids.size() == 1 ? new BidDTO(bids.get(0), true) : null);
             return itemDTO;
         }
     }
