@@ -73,17 +73,17 @@ public class ItemDTO {
         this.expiring = expiring;
     }
 
-    public ItemDTO(Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, Bid currentBid) {
+    public ItemDTO(Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid) {
         this.itemCostMin = itemCostMin;
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.expiring = expiring;
         this.itemStatus = itemStatus;
-        this.currentBid = new BidDTO(currentBid);
+        this.currentBid = currentBid;
     }
 
     public ItemDTO(Item item) {
-        this(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), item.getCurrentBid());
+        this(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), new BidDTO(item.getCurrentBid()));
     }
 
 }
