@@ -67,7 +67,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
             })
             .then(function(response) {
               if (response.status == 200) {
-                auth.username = credentials.username;
+                auth.username = response.data.name;
                 auth.authenticated = true;
               } else {
                 auth.authenticated = false;
@@ -94,16 +94,6 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     },
 
     clear: function(successHandler, errorHandler) {
-//        $http.post('/logout', {}).then(
-//          function(response) {
-//            console.log('SUCCESS',response);
-//            auth.authenticated = false;
-//            delete $cookies['JSESSIONID'];
-//            enter();}
-//          ,function(response){
-//            console.log('FAIL',response);
-//            })
-//    },
 
       // Obtain a CSRF token
       logoutResources.options().$promise.then(function(response) {
@@ -160,13 +150,13 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
         //        console.log("Route changes")
           $http.get('/user', {}).then(
           function(response) {
-            console.log('SUCCESS',response);
-            auth.authenticated = true;}
+            console.log('Already Logged In');
+            auth.authenticated = true;
+            auth.username = response.data.name;}
           ,function(response){
-            console.log('FAIL',response);
+            console.log('User is not logged In');
             enter();
             auth.authenticate({}, function(authenticated) {
-            console.log("Auht :", authenticated)
             if (authenticated) {
               //          console.log("Yes :",auth.path)
               $location.path(auth.path);

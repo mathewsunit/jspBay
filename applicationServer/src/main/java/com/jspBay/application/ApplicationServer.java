@@ -52,6 +52,7 @@ public class ApplicationServer {
             User mary = new User("mary", "mary@mary.com",  new BCryptPasswordEncoder().encode("mary"));
             userRepository.save(mary);
             itemRepository.save(new Item(ala,mary,"blah",Long.MIN_VALUE));
+            itemRepository.save(new Item(ala,mary,"bling",Long.MIN_VALUE));
         };
     }
 }

@@ -1,6 +1,6 @@
 <div>
     <div class="container-fluid" style="text-align:center;">
-        <h1>Welcome</h1>
+        <h1>Welcome {{controller.user}}</h1>
         <br/>
         <div class="input-group" style="width:250px;text-align:center;margin:auto;">
             <input type="text" class="form-control"/>
@@ -18,9 +18,9 @@
                         <th>Product</th>
                         <th>Price</th>
                     </tr>
-                    <tr>
-                        <td>Laptop</td>
-                        <td>$500</td>
+                    <tr ng-repeat="item in soldarray">
+                        <td>{{item.itemName}}</td>
+                        <td>{{item.itemStatus}}</td>
                     </tr>
                 </table>
             </div>
@@ -31,9 +31,9 @@
                         <th>Product</th>
                         <th>Bid</th>
                     </tr>
-                    <tr>
-                        <td>Phone</td>
-                        <td>$200</td>
+                    <tr ng-repeat="item in onsalearray">
+                        <td>{{item.itemName}}</td>
+                        <td>{{item.itemStatus}}</td>
                     </tr>
                 </table>
             </div>

@@ -15,15 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
-//@EntityScan("com.jspAuction.domain")
-//@EnableJpaRepositories("com.jspAuction.repository")
-//@PropertySource("classpath:db-config.properties")
 public class WebServer {
-    /**
-     * URL uses the logical name of account-service - upper or lower case,
-     * doesn't matter.
-     */
-
     @Bean
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter() {
         return new ApplicationSecurity();

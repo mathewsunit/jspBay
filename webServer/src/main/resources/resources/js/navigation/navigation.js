@@ -6,6 +6,7 @@ angular.module('navigation', ['ngRoute', 'secure-rest-angular']).controller(
 			var self = this;
 
 			self.credentials = {};
+
 			self.username = function() {
                 return Login.username;
             }
@@ -21,13 +22,12 @@ angular.module('navigation', ['ngRoute', 'secure-rest-angular']).controller(
 			self.login = function() {
 				Login.authenticate(self.credentials, function(authenticated) {
 					if (authenticated) {
-						console.log("Login succeeded")
 						self.error = false;
 					} else {
-						console.log("Login failed")
 						self.error = true;
 					}
 				})
 			};
+
 			self.logout = Login.clear;
 });

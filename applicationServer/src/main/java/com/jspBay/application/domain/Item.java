@@ -42,6 +42,9 @@ public class Item {
     @Column(name = "created", nullable = false)
     private Date created;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     public Long getId() {
         return id;
     }
@@ -106,6 +109,15 @@ public class Item {
         this.created = created;
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Item(User seller, User buyer, String description, Long cost){
         this.seller = seller;
         this.buyer = buyer;
@@ -115,6 +127,7 @@ public class Item {
         this.created = now;
         this.expiring = now;
         this.itemStatus = ItemStatus.ONSALE;
+        this.name = "Lolzz"+String.valueOf(now);
     }
 
     public Item(){

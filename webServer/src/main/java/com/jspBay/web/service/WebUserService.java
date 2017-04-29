@@ -49,11 +49,4 @@ public class WebUserService {
         return restTemplate.getForObject(serviceUrl + "/user/{userName}",
                 UserDTO.class, userName);
     }
-
-//    public User findByUserName(String userName) {
-//        logger.info("findByUserName() invoked: for " + userName);
-//        System.out.println(restTemplate.getForObject(serviceUrl + "/test",
-//                User.class, userName));
-//        return null;
-//    }
 }
