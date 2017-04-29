@@ -81,6 +81,49 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
         </dependency>
+        <!-- Jackson json mapper -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate4</artifactId>
+            <version>2.4.4</version>
+        </dependency>
+
+        <!-- JSR-303 validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+
+        <!-- Memcached Client -->
+        <dependency>
+            <groupId>com.google.code.simple-spring-memcached</groupId>
+            <artifactId>spring-cache</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.simple-spring-memcached</groupId>
+            <artifactId>spymemcached-provider</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.simple-spring-memcached</groupId>
+            <artifactId>xmemcached-provider</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
+        <!-- EHCache -->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>0.16.0.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

@@ -4,6 +4,10 @@ angular.module('home', ['secure-rest-angular']).controller('home', function($coo
 	$scope.onsalearray = [];
 	$scope.soldarray = [];
 
+	$scope.activebidarray = [];
+    $scope.closedbidarray = [];
+
+
 	var userCall = $resource('/user', {}, {
         get: {method: 'GET', cache: false, isArray: false},
         options: {method: 'OPTIONS', cache: false}
@@ -23,19 +27,23 @@ angular.module('home', ['secure-rest-angular']).controller('home', function($coo
         console.log('GET user returned: ', response);
 		self.user = response.name;
 		itemCall.query({seller: self.user}).$promise.then(function(response) {
-            console.log('GET item returned: ', response);
+            console.log('GET items returned: ', response);
             for(var obj in response){
-            console.log("obj is ",response[obj].itemStatus);
             if(response[obj].itemStatus === 'ONSALE'){
                 $scope.onsalearray.push(response[obj]);
             }else if(response[obj].itemStatus === 'SOLD'){
                 $scope.soldarray.push(response[obj]);
             }};
-            console.log($scope.onsalearray)
         });
         bidCall.query({bidder: self.user}).$promise.then(function(response) {
-            console.log('GET item returned: ', response);
-            $scope.bids = response;
+            console.log('GET bids returned: ', response);
+            for(var obj in response){
+            console.log("obj is ",response[obj].bidStatus);
+            if(response[obj].bidStatus === 'ONSALE'){
+                $scope.activebidarray.push(response[obj]);
+            }else if(response[obj].bidStatus === 'SOLD'){
+                $scope.closedbidarray.push(response[obj]);
+            }};
         });
 
 	});

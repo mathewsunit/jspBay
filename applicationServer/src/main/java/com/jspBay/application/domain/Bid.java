@@ -1,9 +1,12 @@
 package com.jspBay.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jspBay.application.enums.BidStatus;
 import org.hibernate.annotations.Check;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,10 +15,11 @@ import java.util.Date;
 
 @Entity
 @Check(constraints = "bid_status = 'ACCEPTED' or bid_status = 'REJECTED' or bid_status = 'LEADING'")
-public class Bid {
+public class Bid extends ResourceSupport implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -36,7 +40,7 @@ public class Bid {
     @Column(name = "created", nullable = false)
     private Date created;
 
-    public Long getId() {
+    public Long getBidId() {
         return id;
     }
 
@@ -85,5 +89,15 @@ public class Bid {
     }
 
     public Bid(){
+    }
+
+    @Override
+    public String toString() {
+        return "Bid{" +
+                "id=" + id +
+                ", bidder='" + bidder.getUserId() + '\'' +
+                ", value='" + value + '\'' +
+                ", item=" + item.getItemId() +
+                '}';
     }
 }

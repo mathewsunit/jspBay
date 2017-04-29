@@ -1,13 +1,17 @@
 package com.jspBay.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.hateoas.ResourceSupport;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by sunit on 3/19/17.
  */
 
 @Entity
-public class User {
+public class User extends ResourceSupport implements Serializable {
 
     public User() {}
 
@@ -18,7 +22,8 @@ public class User {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     @Column(name = "id", nullable = false)
     private int id;
 
@@ -31,7 +36,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public int getId() {
+    public int getUserId() {
         return id;
     }
 
@@ -61,5 +66,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password=" + password +
+                '}';
     }
 }
