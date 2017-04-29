@@ -27,7 +27,7 @@ public class Item {
     @JoinColumn(name = "buyer_id", nullable = false)
     private User buyer;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="bid")
     private Bid currentBid;
 
     @Enumerated(EnumType.STRING)
