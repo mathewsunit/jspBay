@@ -33,7 +33,7 @@
                         <th>Bid</th>
                     </tr>
                     <tr ng-repeat="item in onSaleItems">
-                        <td><a ng-href="/items/{{item.itemId}}">{{item.itemName}}</a></td>
+                        <td><a ng-click="viewItem(item)">{{item.itemName}}</a></td>
                         <td>{{item.currentBid.bidAmount}}</td>
                     </tr>
                     <tr ng-hide="onSaleItems.length"><td colspan="2"> No items sold yet!</td></tr>

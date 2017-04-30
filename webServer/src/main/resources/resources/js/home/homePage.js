@@ -49,4 +49,10 @@ angular.module('home', ['secure-rest-angular']).controller('home', function($coo
             console.log('Active bids: ', $scope.activeBids);
         });
 	});
+
+	$scope.viewItem = function(item)
+    {
+       console.log(item.itemId);
+       $location.path('/item/:itemid')
+    };
 });

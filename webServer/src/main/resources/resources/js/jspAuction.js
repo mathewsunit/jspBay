@@ -1,5 +1,5 @@
 angular
-		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'home', 'message', 'navigation' ])
+		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'item', 'home', 'message', 'navigation' ])
 		.provider('myCSRF',[function(){
            var headerName = 'X-CSRF-TOKEN';
            var cookieName = 'CSRF-TOKEN';
