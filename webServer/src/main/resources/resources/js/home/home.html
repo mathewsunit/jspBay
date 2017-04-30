@@ -18,8 +18,8 @@
                         <th>Product</th>
                         <th>Price</th>
                     </tr>
-                    <tr ng-repeat="item in soldItems" ng-href="http://localhost:3333/items/{{item.itemId}}">
-                        <td>{{item.itemName}}</td>
+                    <tr ng-repeat="item in soldItems">
+                        <td><a ng-href="/items/{{item.itemId}}">{{item.itemName}}</a></td>
                         <td>{{item.currentBid.bidAmount}}</td>
                     </tr>
                     <tr ng-hide="soldItems.length"><td colspan="2"> No items sold yet!</td></tr>
@@ -32,8 +32,8 @@
                         <th>Product</th>
                         <th>Bid</th>
                     </tr>
-                    <tr ng-repeat="item in onSaleItems" ng-href="http://localhost:3333/items/{{item.itemId}}>
-                        <td>{{item.itemName}}</td>
+                    <tr ng-repeat="item in onSaleItems">
+                        <td><a ng-href="/items/{{item.itemId}}">{{item.itemName}}</a></td>
                         <td>{{item.currentBid.bidAmount}}</td>
                     </tr>
                     <tr ng-hide="onSaleItems.length"><td colspan="2"> No items sold yet!</td></tr>

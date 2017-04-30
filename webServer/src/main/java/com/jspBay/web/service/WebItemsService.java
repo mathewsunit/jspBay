@@ -51,8 +51,7 @@ public class WebItemsService {
     public ItemDTO findByNumber(String itemNumber) {
 
         logger.info("findByNumber() invoked: for " + itemNumber);
-        return restTemplate.getForObject(serviceUrl + "/item/{number}",
-                ItemDTO.class, itemNumber);
+        return restTemplate.getForObject(serviceUrl + "/item/{number}", ItemDTO.class, itemNumber);
     }
 
     public List<ItemDTO> bySellerContains(String name) {
