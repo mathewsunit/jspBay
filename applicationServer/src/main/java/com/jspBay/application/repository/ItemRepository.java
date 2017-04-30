@@ -23,6 +23,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findBySeller(User seller);
 
     @Cacheable(value = "defaultCache")
+    List<Item> findByNameContainingIgnoreCase(String partialName);
+
+    @Cacheable(value = "defaultCache")
     @Query("SELECT count(*) from Item")
     String countItems();
 }

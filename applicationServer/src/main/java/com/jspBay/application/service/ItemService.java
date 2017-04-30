@@ -53,6 +53,24 @@ public class ItemService {
         }
     }
 
+    public List<ItemDTO> byItemSearch(String partialName) {
+        logger.info("items-service byItemSearch() invoked for "
+                + partialName);
+
+        List<ItemDTO> itemsDTO = new ArrayList<>();
+        List<Item> items = itemRepository.findByNameContainingIgnoreCase(partialName);
+        logger.info("items-service byItemSearch() found: " + items);
+        if (items == null || items.size() == 0)
+            throw new ItemNotFoundException(partialName);
+        else {
+            for(Item item:items){
+                ItemDTO itemDTO = new ItemDTO(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus());
+                itemsDTO.add(itemDTO);
+            };
+            return itemsDTO;
+        }
+    }
+
     public ItemDTO byNumber(String itemNumber) {
 
         logger.info("items-service byNumber() invoked: " + itemNumber);

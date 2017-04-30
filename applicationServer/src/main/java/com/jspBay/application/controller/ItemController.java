@@ -33,4 +33,11 @@ public class ItemController {
                 + partialName);
         return itemService.bySeller(partialName);
     }
+
+    @RequestMapping("/items/search/{name}")
+    public List<ItemDTO> byItemSearch(@PathVariable("name") String partialName) {
+        logger.info("ItemController byItemSearch() invoked for "
+                + partialName);
+        return itemService.byItemSearch(partialName);
+    }
 }

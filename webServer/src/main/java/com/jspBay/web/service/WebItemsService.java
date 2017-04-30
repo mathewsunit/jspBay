@@ -72,6 +72,23 @@ public class WebItemsService {
             return Arrays.asList(item);
     }
 
+    public List<ItemDTO> byItemSearchContains(String name) {
+        logger.info("byItemSearchContains() invoked:  for " + name);
+        ItemDTO[] item = null;
+
+        try {
+            item = restTemplate.getForObject(serviceUrl
+                    + "/items/search/{name}", ItemDTO[].class, name);
+        } catch (HttpClientErrorException e) { // 404
+            // Nothing found
+        }
+
+        if (item == null || item.length == 0)
+            return null;
+        else
+            return Arrays.asList(item);
+    }
+
     public ItemDTO getByNumber(String itemNumber) {
         ItemDTO account = restTemplate.getForObject(serviceUrl
                 + "/items/{number}", ItemDTO.class, itemNumber);
