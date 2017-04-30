@@ -52,7 +52,6 @@ angular.module('home', ['secure-rest-angular']).controller('home', function($coo
 
 	$scope.viewItem = function(item)
     {
-       console.log(item.itemId);
-       $location.path('/item/:itemid')
+       $location.path('/item/' + item.itemId);
     };
 });

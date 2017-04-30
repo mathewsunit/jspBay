@@ -3,17 +3,17 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
 
 	$scope.item = {};
 
-    var itemCall = $resource('/items/1', {}, {
+    var itemCall = $resource('/items/:itemId', {}, {
         get: {method: 'GET', cache: false, isArray: false},
         options: {method: 'OPTIONS', cache: false}
     });
 
-    var formCall = $resource('/items/bid/1', {}, {
+    var formCall = $resource('/items/bid/:itemId', {}, {
         get: {method: 'POST', cache: false, isArray: false},
         options: {method: 'OPTIONS', cache: false}
     });
 
-    itemCall.get().$promise.then(function(response) {
-            console.log('GET item returned: ', response);
-        });
+    itemCall.get({itemId : $routeParams.itemId}).$promise.then(function(response) {
+        $scope.item = response;
+    });
 });
