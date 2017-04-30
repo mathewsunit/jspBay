@@ -13,11 +13,7 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
         options: {method: 'OPTIONS', cache: false}
     });
 
-//    itemCall.query({itemId: $routeParams.itemId}).$promise.then(function(response) {
-//        console.log('GET item returned: ', response);
-//    });
-
-    itemCall.query().$promise.then(function(response) {
+    itemCall.get().$promise.then(function(response) {
             console.log('GET item returned: ', response);
         });
 });
