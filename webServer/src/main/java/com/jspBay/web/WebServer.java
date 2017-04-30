@@ -1,6 +1,7 @@
 package com.jspBay.web;
 
 import com.jspBay.web.configuration.ApplicationSecurity;
+import com.jspBay.web.util.BasicAuthRestTemplate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,7 +37,7 @@ public class WebServer {
     @LoadBalanced
     @Bean
     RestTemplate restTemplate() {
-        return new RestTemplate();
+        return new BasicAuthRestTemplate("user","password");
     }
 
 }

@@ -2,7 +2,6 @@ package com.jspBay.application;
 
 import com.jspBay.application.configuration.AccountsConfiguration;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Import;
@@ -14,9 +13,9 @@ import java.util.logging.Logger;
  */
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = {
-        org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
-        org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration.class})
+//@EnableAutoConfiguration(exclude = {
+//        org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
+//        org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration.class})
 @EnableDiscoveryClient
 @Import(AccountsConfiguration.class)
 public class ApplicationServer {
