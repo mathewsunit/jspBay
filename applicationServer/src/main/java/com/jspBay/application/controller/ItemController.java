@@ -1,13 +1,12 @@
 package com.jspBay.application.controller;
 
+import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
 import com.jspBay.application.repository.ItemRepository;
 import com.jspBay.application.repository.UserRepository;
 import com.jspBay.application.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,6 +34,12 @@ public class ItemController {
     public ItemDTO byNumber(@PathVariable("itemNumber") String itemNumber) {
         logger.info("ItemController byNumber() invoked for" + itemNumber);
         return itemService.byNumber(itemNumber);
+    }
+
+    @RequestMapping(value = "/items/bid/{itemNumber}", method = RequestMethod.POST)
+    public BidDTO bid(@RequestBody BidDTO bidDTO) {
+        logger.info("ItemController byNumber() invoked for" + bidDTO);
+        return itemService.bidOnItem(bidDTO);
     }
 
     @RequestMapping("/items/seller/{name}")

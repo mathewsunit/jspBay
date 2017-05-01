@@ -48,10 +48,8 @@ public class BidService {
 
         if (bid == null)
             throw new BidNotFoundException(bidNumber);
-        else {
-            BidDTO bidDTO = new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus());
-            return bidDTO;
-        }
+        else
+            return new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus());
     }
 
     public List<BidDTO> byBidder(@PathVariable("name") String partialName) {
@@ -67,10 +65,8 @@ public class BidService {
             throw new BidNotFoundException(partialName);
         else {
             List<BidDTO> bidDTOList = new ArrayList<>();
-            for(Bid bid:bids) {
-                BidDTO bidDTO = new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus(), new ItemDTO(bid.getItem(), null));
-                bidDTOList.add(bidDTO);
-            }
+            for(Bid bid : bids)
+                bidDTOList.add(new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus(), new ItemDTO(bid.getItem(), null), -1));
             return bidDTOList;
         }
     }

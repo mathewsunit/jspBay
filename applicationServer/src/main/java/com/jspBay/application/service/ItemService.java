@@ -2,6 +2,7 @@ package com.jspBay.application.service;
 
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
+import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
 import com.jspBay.application.domain.User;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -67,12 +69,25 @@ public class ItemService {
         Item item = itemRepository.findOneById(Long.valueOf(itemNumber));
         logger.info("items-service byNumber() found: " + item);
 
-        if (item == null)
+        if (item == null) {
             throw new ItemNotFoundException(itemNumber);
-        else {
+        } else {
             List<Bid> bids = bidRepository.findFirstByItemOrderByCreatedDesc(item);
-            ItemDTO itemDTO = new ItemDTO(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), bids.size() == 1 ? new BidDTO(bids.get(0), true) : null);
-            return itemDTO;
+            return new ItemDTO(item, (bids.size() == 1) ? new BidDTO(bids.get(0), true) : null);
+        }
+    }
+
+    public BidDTO bidOnItem(BidDTO bid) {
+
+        logger.info("items-service bidOnItem() invoked: " + bid.getItem().getItemId());
+        User bidder = userRepository.findOne((long) bid.getBidderId());
+        Item item = itemRepository.findOneById(bid.getItemId());
+        Bid newBid = new Bid(bidder, item, bid.getBidStatus(), Calendar.getInstance().getTime(), bid.getBidAmount());
+        newBid = bidRepository.save(newBid);
+        if (newBid == null) {
+            throw new ItemNotFoundException("Bid could not be created.");
+        } else {
+            return new BidDTO(newBid, false);
         }
     }
 }

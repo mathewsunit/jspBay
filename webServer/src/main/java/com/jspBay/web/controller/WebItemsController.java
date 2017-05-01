@@ -1,16 +1,17 @@
 package com.jspBay.web.controller;
 
+import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
 import com.jspBay.web.service.WebItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -53,6 +54,22 @@ public class WebItemsController {
         logger.info("WebItemsController bySeller() found: " + items);
         if(null != items){
             return new ResponseEntity<>(items, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping("/items/bid")
+    public ResponseEntity<BidDTO> bidItem(@RequestParam("itemNumber") String itemNumber, @RequestParam("bidAmount") String bidAmount) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ItemDTO item = itemsService.findByNumber(itemNumber);
+        String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), bidAmount);
+        if(message != null) {
+            BidDTO bid = itemsService.bidItem(item, bidAmount);
+            logger.info("WebItemsController bySeller() found: " + bid);
+            if(bid != null)
+                return new ResponseEntity<>(bid, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new BidDTO(message), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

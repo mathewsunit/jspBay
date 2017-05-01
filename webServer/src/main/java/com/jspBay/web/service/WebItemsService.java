@@ -1,16 +1,21 @@
 package com.jspBay.web.service;
 
+import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
+import com.jspBay.web.enums.BidStatus;
 import com.jspBay.web.exceptions.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -49,15 +54,21 @@ public class WebItemsService {
     }
 
     public ItemDTO findByNumber(String itemNumber) {
-
         logger.info("findByNumber() invoked: for " + itemNumber);
-        return restTemplate.getForObject(serviceUrl + "/items/{number}", ItemDTO.class, itemNumber);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ItemDTO item = restTemplate.getForObject(serviceUrl + "/items/{number}", ItemDTO.class, itemNumber);
+        item.setCanUserBid(auth.getName(), Calendar.getInstance().getTime());
+        return item;
+    }
+
+    public BidDTO bidItem(ItemDTO itemDTO, String bidAmount) {
+        logger.info("bidItem() invoked:  for " + itemDTO.getItemId());
+        return restTemplate.postForObject(serviceUrl + "/items/bid/", new BidDTO(itemDTO.getItemId(), Long.parseLong(bidAmount), BidStatus.LEADING, itemDTO), BidDTO.class);
     }
 
     public List<ItemDTO> bySellerContains(String name) {
         logger.info("bySellerContains() invoked:  for " + name);
         ItemDTO[] item = null;
-
         try {
             item = restTemplate.getForObject(serviceUrl + "/items/seller/{name}", ItemDTO[].class, name);
         } catch (HttpClientErrorException e) { // 404
@@ -70,13 +81,14 @@ public class WebItemsService {
             return Arrays.asList(item);
     }
 
+    /*
     public ItemDTO getByNumber(String itemNumber) {
-        ItemDTO account = restTemplate.getForObject(serviceUrl
-                + "/items/{number}", ItemDTO.class, itemNumber);
-
+        ItemDTO account = restTemplate.getForObject(serviceUrl + "/items/{number}", ItemDTO.class, itemNumber);
         if (account == null)
             throw new ItemNotFoundException(itemNumber);
         else
             return account;
     }
+
+    */
 }

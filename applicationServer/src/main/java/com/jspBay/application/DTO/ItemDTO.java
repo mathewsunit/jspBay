@@ -29,6 +29,8 @@ public class ItemDTO {
     @NotNull
     private ItemStatus itemStatus;
 
+    private UserDTO seller;
+
     private BidDTO currentBid;
 
     public BidDTO getCurrentBid() {
@@ -79,7 +81,11 @@ public class ItemDTO {
         return itemId;
     }
 
-    public ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid) {
+    public UserDTO getSeller() {
+        return seller;
+    }
+
+    private ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid, UserDTO seller) {
         this.itemId = itemId;
         this.itemCostMin = itemCostMin;
         this.itemName = itemName;
@@ -87,10 +93,11 @@ public class ItemDTO {
         this.expiring = expiring;
         this.itemStatus = itemStatus;
         this.currentBid = currentBid;
+        this.seller = seller;
     }
 
     public ItemDTO(Item item, BidDTO currentBid) {
-        this(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), currentBid);
+        this(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), currentBid, new UserDTO(item.getSeller()));
     }
 
 }

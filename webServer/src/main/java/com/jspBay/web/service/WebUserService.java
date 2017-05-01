@@ -40,8 +40,7 @@ public class WebUserService {
     public void demoOnly() {
         // Can't do this in the constructor because the RestTemplate injection
         // happens afterwards.
-        logger.warning("The RestTemplate request factory is "
-                + restTemplate.getRequestFactory().getClass());
+        logger.warning("The RestTemplate request factory is " + restTemplate.getRequestFactory().getClass());
     }
 
     public UserDTO findByUserName(String userName) {

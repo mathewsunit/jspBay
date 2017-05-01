@@ -13,11 +13,15 @@ public class BidDTO {
     @NotNull
     private Long itemId;
     @NotNull
+    private Long id;
+    @NotNull
     private Long bidAmount;
     @NotNull
     private UserDTO bidder;
     @NotNull
     private BidStatus bidStatus;
+
+    private String errorMessage;
 
     private ItemDTO item;
 
@@ -49,17 +53,32 @@ public class BidDTO {
         return bidder;
     }
 
-    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus) {
+    public BidDTO(Long id, Long itemId, Long bidAmount, BidStatus bidStatus) {
+        this.id = id;
         this.itemId = itemId;
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
     }
 
-    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {
+    public BidDTO(Long id, Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {
+        this.id = id;
         this.itemId = itemId;
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
         this.item = item;
+    }
+
+    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {
+        this.id = id;
+        this.itemId = itemId;
+        this.bidAmount = bidAmount;
+        this.bidStatus = bidStatus;
+        this.item = item;
+    }
+
+    public BidDTO(String errorMessage) {
+        this.errorMessage = errorMessage;
+        this.id = (long) -1;
     }
 
     public ItemDTO getItem() {
@@ -67,4 +86,8 @@ public class BidDTO {
     }
 
     public BidDTO(){}
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }

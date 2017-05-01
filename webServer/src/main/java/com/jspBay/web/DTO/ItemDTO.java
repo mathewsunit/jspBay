@@ -4,6 +4,7 @@ package com.jspBay.web.DTO;
 import com.jspBay.web.enums.ItemStatus;
 
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -26,6 +27,8 @@ public class ItemDTO {
     private Date expiring;
     @NotNull
     private ItemStatus itemStatus;
+
+    private UserDTO seller;
 
     private BidDTO currentBid;
 
@@ -83,7 +86,27 @@ public class ItemDTO {
         return itemId;
     }
 
-    public ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid) {
+    public UserDTO getSeller() {
+        return seller;
+    }
+
+    public void setCanUserBid(String currentUserName, Date currentDate) {
+        this.canUserBid = getCanUserBid(currentUserName, currentDate, null) == null;
+    }
+
+    public String getCanUserBid(String currentUserName, Date currentDate, String bidAmount) {
+        //Change finally.
+        if(!currentUserName.equals(this.seller.getUserName()))
+            return "You cannot bid on your own item.";
+        else if(this.getExpiring().getTime() > currentDate.getTime())
+            return "The deadline has passed.";
+        else if(bidAmount != null && Long.parseLong(bidAmount) <= this.getCurrentBid().getBidAmount())
+            return "Bid amount should be more than than the current bid";
+        else
+            return null;
+    }
+
+    public ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid, UserDTO seller) {
         this.itemId = itemId;
         this.itemCostMin = itemCostMin;
         this.itemName = itemName;
@@ -91,6 +114,7 @@ public class ItemDTO {
         this.expiring = expiring;
         this.itemStatus = itemStatus;
         this.currentBid = currentBid;
+        this.seller = seller;
     }
 
     public ItemDTO(){}
