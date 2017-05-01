@@ -100,7 +100,7 @@ public class ItemDTO {
             return "You cannot bid on your own item.";
         else if(this.getExpiring().getTime() > currentDate.getTime())
             return "The deadline has passed.";
-        else if(bidAmount != null && Long.parseLong(bidAmount) <= this.getCurrentBid().getBidAmount())
+        else if(bidAmount != null && ((this.getCurrentBid() != null && Long.parseLong(bidAmount) <= this.getCurrentBid().getBidAmount()) || Long.parseLong(bidAmount) < this.getItemCostMin()))
             return "Bid amount should be more than than the current bid";
         else
             return null;
