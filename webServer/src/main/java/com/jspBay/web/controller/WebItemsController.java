@@ -1,9 +1,11 @@
-package com.jspBay.web.controller;
+    package com.jspBay.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
 import com.jspBay.web.service.WebItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,6 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Payload;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -58,20 +64,24 @@ public class WebItemsController {
     }
 
     @RequestMapping("/items/bid")
-    public ResponseEntity<BidDTO> bidItem(@RequestBody String jsonStr) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("WebItemsController bidItem() invoked: " + jsonStr);
-
-//        ItemDTO item = itemsService.findByNumber(itemNumber);
-//        String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), bidAmount);
-//        if(message != null) {
-//            BidDTO bid = itemsService.bidItem(item, bidAmount);
-//            logger.info("WebItemsController bySeller() found: " + bid);
-//            if(bid != null)
-//                return new ResponseEntity<>(bid, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(new BidDTO(message), HttpStatus.OK);
-//        }
+    public ResponseEntity<BidDTO> bidItem(@RequestBody String response) {
+        logger.info("WebItemsController bySeller() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            ItemDTO item = itemsService.findByNumber((String) result.get("itemNumber"));
+            String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), result.get("bidAmount").toString());
+            if(message == null) {
+                BidDTO bid = itemsService.bidItem(item, result.get("bidAmount").toString());
+                logger.info("WebItemsController bySeller() found: " + bid);
+                if(bid != null)
+                    return new ResponseEntity<>(bid, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new BidDTO(message), HttpStatus.OK);
+            }
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

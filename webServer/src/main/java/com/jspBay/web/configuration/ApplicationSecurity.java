@@ -82,6 +82,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/user", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/resource*/**", HttpMethod.GET.toString())),
+                        new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.POST.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.POST.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/user*/create*/**", HttpMethod.POST.toString())),
