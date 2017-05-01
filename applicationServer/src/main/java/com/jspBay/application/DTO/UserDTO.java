@@ -44,6 +44,7 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this.userName = user.getUserName();
+        this.email = user.getEmail();
     }
 
     public UserDTO() {
@@ -56,5 +57,11 @@ public class UserDTO {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public UserDTO(User user, boolean bool) {
+        this.userName = user.getUserName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
     }
 }

@@ -3,7 +3,9 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
   enter = function() {
     console.log("Route Change Path ", $location.path())
     console.log($location.path(), "==", auth.path)
-    if ($location.path() != auth.loginPath) {
+    if ($location.path() === '/user/create'){
+      $location.path('/user/create');
+    }else if ($location.path() != auth.loginPath) {
       auth.path = $location.path();
       if (!auth.authenticated) {
         $location.path(auth.loginPath);
@@ -156,12 +158,8 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
           ,function(response){
             console.log('User is not logged In');
             enter();
-            auth.authenticate({}, function(authenticated) {
-            if (authenticated) {
-              //          console.log("Yes :",auth.path)
-              $location.path(auth.path);
-            }
-            })})
+            auth.authenticated = false;
+            })
       });
     }
   };
