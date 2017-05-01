@@ -9,7 +9,7 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
         options: {method: 'OPTIONS', cache: false}
     });
 
-    var bidCall = $resource('/items/bid/:itemId', {}, {
+    var bidCall = $resource('/items/bid/', {}, {
         post: {method: 'POST', cache: false, isArray: false},
         options: {method: 'OPTIONS', cache: false}
     });
@@ -20,6 +20,7 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
 
     $scope.sendForm = function(amount) {
         console.log("Send form clicked");
+        /*
         var csrfToken = Cookies.getFromDocument($http.defaults.xsrfCookieName);
         // Prepare the headers
         var headers = {
@@ -27,15 +28,7 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
         };
         headers[$http.defaults.xsrfHeaderName] = csrfToken;
         console.log($http.defaults.xsrfHeaderName + ":" + csrfToken)
-        $http.post('/items/bid/:itemId', {itemId : $routeParams.itemId, bidAmount : amount}, {headers: headers}).then(function() {
-            console.log("Bid Response : " + response);
-            if(response.id == -1)
-                $scope.errorMessage = response.errorMessage;
-            else
-                $location.path('/item/' + $routeParams.itemId);
-        });
-        /*
-        bidCall.post({itemId : $routeParams.itemId, bidAmount : amount}).$promise.then(function(response) {
+        $http.post('/items/bid', {itemId : $routeParams.itemId, bidAmount : amount}, {headers: headers}).then(function() {
             console.log("Bid Response : " + response);
             if(response.id == -1)
                 $scope.errorMessage = response.errorMessage;
@@ -43,5 +36,12 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
                 $location.path('/item/' + $routeParams.itemId);
         });
         */
+        bidCall.post({itemNumber : $routeParams.itemId, bidAmount : amount}).$promise.then(function(response) {
+            console.log("Bid Response : " + response);
+            if(response.id == -1)
+                $scope.errorMessage = response.errorMessage;
+            else
+                $location.path('/item/' + $routeParams.itemId);
+        });
     }
 });

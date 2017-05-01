@@ -44,8 +44,8 @@ angular
                         templateUrl : 'js/item/item.html',
                         controller : 'item',
                         controllerAs : 'controller'
-                    }).when('/item/bid/:itemId', {
-                        templateUrl : 'js/item/bid.html',
+                    }).when('/item/create', {
+                        templateUrl : 'js/item/create.html',
                         controller : 'item',
                         controllerAs : 'controller'
 					}).otherwise('/');
