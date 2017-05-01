@@ -100,4 +100,32 @@ public class ItemDTO {
         this(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), currentBid, new UserDTO(item.getSeller()));
     }
 
+    public ItemDTO() {
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
+    public void setSeller(UserDTO seller) {
+        this.seller = seller;
+    }
+
+    public void setCurrentBid(BidDTO currentBid) {
+        this.currentBid = currentBid;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDTO{" +
+                "itemId=" + itemId +
+                ", itemCostMin=" + itemCostMin +
+                ", itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", expiring=" + expiring +
+                ", itemStatus=" + itemStatus +
+                ", seller=" + seller +
+                ", currentBid=" + currentBid +
+                '}';
+    }
 }

@@ -29,5 +29,5 @@
          <input type="number" ng-model="bidAmount" placeholder="Enter Bid Amount:"/>
          <input type="submit" ng-click="sendForm(bidAmount)"/>
      </form>
-     <div ng-show="errorMessage" ng-model="errorMessage"></div>
+     <div ng-show="errorMessage.length">{{errorMessage}}</div>
  </div>

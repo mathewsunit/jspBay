@@ -79,8 +79,8 @@ public class ItemService {
 
     public BidDTO bidOnItem(BidDTO bid) {
 
-        logger.info("items-service bidOnItem() invoked: " + bid.getItem().getItemId());
-        User bidder = userRepository.findOne((long) bid.getBidderId());
+        logger.info("items-service bidOnItem() invoked: " + bid);
+        User bidder = userRepository.findOneByUserName(bid.getBidder().getUserName());
         Item item = itemRepository.findOneById(bid.getItemId());
         Bid newBid = new Bid(bidder, item, bid.getBidStatus(), Calendar.getInstance().getTime(), bid.getBidAmount());
         newBid = bidRepository.save(newBid);
@@ -89,5 +89,6 @@ public class ItemService {
         } else {
             return new BidDTO(newBid, false);
         }
+
     }
 }

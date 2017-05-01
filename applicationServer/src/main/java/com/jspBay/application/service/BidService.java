@@ -66,7 +66,7 @@ public class BidService {
         else {
             List<BidDTO> bidDTOList = new ArrayList<>();
             for(Bid bid : bids)
-                bidDTOList.add(new BidDTO(bid.getId(),bid.getValue(),bid.getBidStatus(), new ItemDTO(bid.getItem(), null), -1));
+                bidDTOList.add(new BidDTO(bid.getId(),bid.getValue(), bid.getBidStatus(), new ItemDTO(bid.getItem(), null), (long) -1));
             return bidDTOList;
         }
     }

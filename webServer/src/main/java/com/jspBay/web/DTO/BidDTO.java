@@ -68,12 +68,13 @@ public class BidDTO {
         this.item = item;
     }
 
-    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item) {
+    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item, String bidderUserName) {
         this.id = id;
         this.itemId = itemId;
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
         this.item = item;
+        this.bidder = new UserDTO(bidderUserName);
     }
 
     public BidDTO(String errorMessage) {
@@ -85,9 +86,26 @@ public class BidDTO {
         return item;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public BidDTO(){}
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @Override
+    public String toString() {
+        return "BidDTO{" +
+                "itemId=" + itemId +
+                ", id=" + id +
+                ", bidAmount=" + bidAmount +
+                ", bidder=" + bidder +
+                ", bidStatus=" + bidStatus +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", item=" + item +
+                '}';
     }
 }

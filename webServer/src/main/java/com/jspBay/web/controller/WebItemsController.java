@@ -72,12 +72,14 @@ public class WebItemsController {
             ItemDTO item = itemsService.findByNumber((String) result.get("itemNumber"));
             String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), result.get("bidAmount").toString());
             if(message == null) {
-                BidDTO bid = itemsService.bidItem(item, result.get("bidAmount").toString());
+                BidDTO bid = itemsService.bidItem(item, result.get("bidAmount").toString(), auth.getName());
                 logger.info("WebItemsController bySeller() found: " + bid);
                 if(bid != null)
                     return new ResponseEntity<>(bid, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(new BidDTO(message), HttpStatus.OK);
+                BidDTO bid = new BidDTO(message);
+                logger.info("WebItemsController bySeller() returning: " + bid.getErrorMessage());
+                return new ResponseEntity<>(bid, HttpStatus.OK);
             }
         } catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

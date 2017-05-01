@@ -95,8 +95,7 @@ public class ItemDTO {
     }
 
     public String getCanUserBid(String currentUserName, Date currentDate, String bidAmount) {
-        //Change finally.
-        if(!currentUserName.equals(this.seller.getUserName()))
+        if(currentUserName.equals(this.seller.getUserName()))
             return "You cannot bid on your own item.";
         else if(this.getExpiring().getTime() > currentDate.getTime())
             return "The deadline has passed.";
@@ -118,4 +117,19 @@ public class ItemDTO {
     }
 
     public ItemDTO(){}
+
+    @Override
+    public String toString() {
+        return "ItemDTO{" +
+                "itemId=" + itemId +
+                ", itemCostMin=" + itemCostMin +
+                ", itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", expiring=" + expiring +
+                ", itemStatus=" + itemStatus +
+                ", seller=" + seller +
+                ", currentBid=" + currentBid +
+                ", canUserBid=" + canUserBid +
+                '}';
+    }
 }

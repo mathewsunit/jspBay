@@ -36,7 +36,7 @@ public class ItemController {
         return itemService.byNumber(itemNumber);
     }
 
-    @RequestMapping(value = "/items/bid/{itemNumber}", method = RequestMethod.POST)
+    @RequestMapping(value = "/items/bid", method = RequestMethod.POST)
     public BidDTO bid(@RequestBody BidDTO bidDTO) {
         logger.info("ItemController byNumber() invoked for" + bidDTO);
         return itemService.bidOnItem(bidDTO);

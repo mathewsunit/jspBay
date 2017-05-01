@@ -61,9 +61,9 @@ public class WebItemsService {
         return item;
     }
 
-    public BidDTO bidItem(ItemDTO itemDTO, String bidAmount) {
+    public BidDTO bidItem(ItemDTO itemDTO, String bidAmount, String bidderUserName) {
         logger.info("bidItem() invoked:  for " + itemDTO.getItemId());
-        return restTemplate.postForObject(serviceUrl + "/items/bid/", new BidDTO(itemDTO.getItemId(), Long.parseLong(bidAmount), BidStatus.LEADING, itemDTO), BidDTO.class);
+        return restTemplate.postForObject(serviceUrl + "/items/bid/", new BidDTO(itemDTO.getItemId(), Long.parseLong(bidAmount), BidStatus.LEADING, itemDTO, bidderUserName), BidDTO.class);
     }
 
     public List<ItemDTO> bySellerContains(String name) {

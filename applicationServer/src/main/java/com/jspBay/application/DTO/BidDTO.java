@@ -20,7 +20,7 @@ public class BidDTO {
     @NotNull
     private UserDTO bidder;
 
-    private int bidderId;
+    private Long bidderId;
 
     private ItemDTO item;
 
@@ -57,14 +57,14 @@ public class BidDTO {
     }
 
     public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus) {
-        this(itemId, bidAmount, bidStatus, null, -1);
+        this(itemId, bidAmount, bidStatus, null, (long) -1);
     }
 
     public BidDTO(Bid bid) {
         this(bid, false);
     }
 
-    public int getBidderId() {
+    public Long getBidderId() {
         return bidderId;
     }
 
@@ -74,11 +74,34 @@ public class BidDTO {
             this.bidder = new UserDTO(bid.getBidder());
     }
 
-    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item, int bidderId) {
+    public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item, Long bidderId) {
         this.itemId = itemId;
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
         this.item = item;
         this.bidderId = bidderId;
+    }
+
+    public void setBidder(UserDTO bidder) {
+        this.bidder = bidder;
+    }
+
+    public void setItem(ItemDTO item) {
+        this.item = item;
+    }
+
+    public BidDTO() {
+    }
+
+    @Override
+    public String toString() {
+        return "BidDTO{" +
+                "itemId=" + itemId +
+                ", bidAmount=" + bidAmount +
+                ", bidStatus=" + bidStatus +
+                ", bidder=" + bidder +
+                ", bidderId=" + bidderId +
+                ", item=" + item +
+                '}';
     }
 }

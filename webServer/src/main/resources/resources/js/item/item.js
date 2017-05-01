@@ -38,10 +38,13 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
         */
         bidCall.post({itemNumber : $routeParams.itemId, bidAmount : amount}).$promise.then(function(response) {
             console.log("Bid Response : " + response);
-            if(response.id == -1)
+            if(response.id == -1) {
+                console.log("Got error message");
                 $scope.errorMessage = response.errorMessage;
-            else
+            } else {
+                console.log("Bid Success.");
                 $location.path('/item/' + $routeParams.itemId);
+            }
         });
     }
 });

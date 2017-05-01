@@ -39,4 +39,20 @@ public class UserDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public UserDTO() {
+    }
+
+    public UserDTO(String userName) {
+        this.userName = userName;
+    }
 }

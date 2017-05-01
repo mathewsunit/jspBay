@@ -45,4 +45,16 @@ public class UserDTO {
     public UserDTO(User user) {
         this.userName = user.getUserName();
     }
+
+    public UserDTO() {
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
