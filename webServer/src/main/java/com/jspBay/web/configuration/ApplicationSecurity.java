@@ -57,7 +57,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/*/**").permitAll()
-                .antMatchers("/login", "/", "/bower_components/**","/js/**","/css/**").permitAll()
+                .antMatchers("/login", "/", "/bower_components/**","/js/**","/css/**","/user/create**").permitAll()
                 .antMatchers("/logout", "/user/**", "/resource/**", "/items/**", "/bids/**").authenticated();
 
         // Handlers and entry points
@@ -83,7 +83,10 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/user", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/resource*/**", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.GET.toString())),
+                        new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.POST.toString())),
+                        new NegatedRequestMatcher(new AntPathRequestMatcher("/user*/create*/**", HttpMethod.POST.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/bids*/**", HttpMethod.GET.toString())),
+                        new NegatedRequestMatcher(new AntPathRequestMatcher("/user*/**", HttpMethod.GET.toString())),
 
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/bower_components/**", HttpMethod.GET.toString())),
@@ -91,6 +94,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/js/**", HttpMethod.GET.toString()))
                 )
         );
-        http.addFilterAfter(new CsrfTokenResponseCookieBindingFilter(), CsrfFilter.class); // CSRF tokens handling
+        http.addFilterAfter(new CsrfTokenResponseCookieBindingFilter(), CsrfFilter.class); // CSRF t-okens handling
     }
 }

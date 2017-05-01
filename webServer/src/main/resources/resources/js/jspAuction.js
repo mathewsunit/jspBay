@@ -1,5 +1,5 @@
 angular
-		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'item', 'home', 'message', 'navigation' ])
+		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'item', 'home', 'message', 'navigation', 'user'])
 		.provider('myCSRF',[function(){
            var headerName = 'X-CSRF-TOKEN';
            var cookieName = 'CSRF-TOKEN';
@@ -48,7 +48,11 @@ angular
                         templateUrl : 'js/item/create.html',
                         controller : 'item',
                         controllerAs : 'controller'
-					}).otherwise('/');
+					}).when('/user/create', {
+                        templateUrl : 'js/user/create.html',
+                        controller : 'user',
+                        controllerAs : 'controller'
+                    }).otherwise('/');
 
                     $httpProvider.interceptors.push('myCSRF');
                     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

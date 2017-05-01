@@ -36,7 +36,7 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
                 $location.path('/item/' + $routeParams.itemId);
         });
         */
-        bidCall.post({itemNumber : $routeParams.itemId, bidAmount : amount}).$promise.then(function(response) {
+        bidCall.post({'itemNumber' : $routeParams.itemId, 'bidAmount' : amount}).$promise.then(function(response) {
             console.log("Bid Response : " + response);
             if(response.id == -1)
                 $scope.errorMessage = response.errorMessage;

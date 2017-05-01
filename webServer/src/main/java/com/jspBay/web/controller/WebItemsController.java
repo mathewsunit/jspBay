@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -59,18 +58,20 @@ public class WebItemsController {
     }
 
     @RequestMapping("/items/bid")
-    public ResponseEntity<BidDTO> bidItem(@RequestParam("itemNumber") String itemNumber, @RequestParam("bidAmount") String bidAmount) {
+    public ResponseEntity<BidDTO> bidItem(@RequestBody String jsonStr) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ItemDTO item = itemsService.findByNumber(itemNumber);
-        String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), bidAmount);
-        if(message != null) {
-            BidDTO bid = itemsService.bidItem(item, bidAmount);
-            logger.info("WebItemsController bySeller() found: " + bid);
-            if(bid != null)
-                return new ResponseEntity<>(bid, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new BidDTO(message), HttpStatus.OK);
-        }
+        logger.info("WebItemsController bidItem() invoked: " + jsonStr);
+
+//        ItemDTO item = itemsService.findByNumber(itemNumber);
+//        String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), bidAmount);
+//        if(message != null) {
+//            BidDTO bid = itemsService.bidItem(item, bidAmount);
+//            logger.info("WebItemsController bySeller() found: " + bid);
+//            if(bid != null)
+//                return new ResponseEntity<>(bid, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(new BidDTO(message), HttpStatus.OK);
+//        }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
