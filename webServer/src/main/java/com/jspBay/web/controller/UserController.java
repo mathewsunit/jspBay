@@ -1,5 +1,6 @@
 package com.jspBay.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jspBay.web.DTO.UserDTO;
 import com.jspBay.web.service.WebUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,9 +42,15 @@ public class UserController {
     }
 
     @RequestMapping("/users/create")
-    public ResponseEntity<UserDTO> createUser(@RequestBody String newUser) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody String newUser) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("WebItemsController createUser  () invoked: " + newUser);
+        HashMap result = new ObjectMapper().readValue(newUser, HashMap.class);
+        logger.info("WebItemsController createUser  () invoked: " + result);
+        UserDTO userDTO = webUserService.findByUserName((String) result.get("username"));
+        if(userDTO == null){
+            userDTO = new UserDTO((String) result.get("username"),(String) result.get("password"),(String) result.get("email"));
+            return webUserService.createNewUser(userDTO);
+        }
 //        JSONObject json = JSONObject.fromObject(jsonMessage);
 //
 //        UserDTO userDTO = webUserService.findByUserName()

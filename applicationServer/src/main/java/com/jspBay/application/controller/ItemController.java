@@ -2,8 +2,6 @@ package com.jspBay.application.controller;
 
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
-import com.jspBay.application.repository.ItemRepository;
-import com.jspBay.application.repository.UserRepository;
 import com.jspBay.application.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +16,9 @@ import java.util.logging.Logger;
 public class ItemController {
 
     protected Logger logger = Logger.getLogger(ItemController.class.getName());
-    protected ItemRepository itemRepository;
-    protected UserRepository userRepository;
 
     @Autowired
     protected ItemService itemService;
-
-    @Autowired
-    public ItemController(ItemRepository itemRepository, UserRepository userRepository) {
-        this.itemRepository = itemRepository;
-        this.userRepository = userRepository;
-    }
 
     @RequestMapping("/items/{itemNumber}")
     public ItemDTO byNumber(@PathVariable("itemNumber") String itemNumber) {

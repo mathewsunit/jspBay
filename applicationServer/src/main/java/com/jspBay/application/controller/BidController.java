@@ -23,11 +23,6 @@ public class BidController {
     @Autowired
     protected BidService bidService;
 
-    @Autowired
-    public BidController(BidRepository bidRepository) {
-        this.bidRepository = bidRepository;
-    }
-
     @RequestMapping("/bids/{bidNumber}")
     public BidDTO byNumber(@PathVariable("bidNumber") String bidNumber) {
         logger.info("BidController byNumber() invoked: " + bidNumber);

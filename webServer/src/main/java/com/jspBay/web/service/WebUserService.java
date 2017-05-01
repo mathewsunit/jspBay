@@ -4,7 +4,10 @@ import com.jspBay.web.DTO.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -45,7 +48,21 @@ public class WebUserService {
 
     public UserDTO findByUserName(String userName) {
         logger.info("findByUserName() invoked: for " + userName);
-        return restTemplate.getForObject(serviceUrl + "/user/{userName}",
-                UserDTO.class, userName);
+        try {
+            UserDTO response = restTemplate.getForObject(serviceUrl + "/user/{userName}",
+                    UserDTO.class, userName);
+            return response;
+        } catch (HttpClientErrorException ex)   {
+            if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public ResponseEntity<UserDTO> createNewUser(UserDTO user) {
+        logger.info("createNewUser() invoked: for " + user.getUserName());
+
+        return restTemplate.postForEntity(serviceUrl + "/user/create",user,UserDTO.class);
     }
 }

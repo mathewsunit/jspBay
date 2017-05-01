@@ -44,5 +44,14 @@ public class UserDTO {
 
     public UserDTO(User user) {
         this.userName = user.getUserName();
+        this.email = user.getEmail();
     }
+
+    public UserDTO(User user, boolean bool) {
+        this.userName = user.getUserName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+    }
+
+    public UserDTO(){};
 }

@@ -5,7 +5,6 @@ import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
 import com.jspBay.web.service.WebItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Payload;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
