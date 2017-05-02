@@ -1,10 +1,13 @@
 package com.jspBay.application.configuration;
 
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.logging.Logger;
 
@@ -16,6 +19,7 @@ import java.util.logging.Logger;
 @ComponentScan
 @EntityScan("com.jspBay.application.domain")
 @EnableJpaRepositories("com.jspBay.application.repository")
+@EnableScheduling
 @PropertySource("classpath:db-config.properties")
 public class AccountsConfiguration {
 
@@ -29,6 +33,16 @@ public class AccountsConfiguration {
      * Creates an in-memory "rewards" database populated with test data for fast
      * testing
      */
+
+    @Bean
+    public ThreadPoolTaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(3);
+        scheduler.setThreadNamePrefix("task-");
+        scheduler.setAwaitTerminationSeconds(60);
+        scheduler.setWaitForTasksToCompleteOnShutdown(true);
+        return scheduler;
+    }
 //    @Bean
 //    public DataSource dataSource() {
 //        logger.info("dataSource() invoked");

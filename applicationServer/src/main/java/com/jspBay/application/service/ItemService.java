@@ -6,6 +6,7 @@ import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
 import com.jspBay.application.domain.User;
+import com.jspBay.application.enums.ItemStatus;
 import com.jspBay.application.exceptions.ItemNotFoundException;
 import com.jspBay.application.repository.BidRepository;
 import com.jspBay.application.repository.ItemRepository;
@@ -90,5 +91,13 @@ public class ItemService {
             return new BidDTO(newBid, false);
         }
 
+    }
+
+    public ItemDTO finishAuction(String itemId) {
+        Item item = itemRepository.findOneById(Long.valueOf(itemId));
+        item.setItemStatus(ItemStatus.SOLD);
+        item = itemRepository.save(item);
+        
+        return null;
     }
 }

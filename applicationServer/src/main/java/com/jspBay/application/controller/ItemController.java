@@ -23,15 +23,23 @@ public class ItemController {
     protected Logger logger = Logger.getLogger(ItemController.class.getName());
 
     @Autowired
-    protected ItemService itemService;
+    private Scheduler scheduler;
 
     @Autowired
-    private ApplicationContext appContext;
+    protected ItemService itemService;
 
     @RequestMapping("/items/{itemNumber}")
     public ItemDTO byNumber(@PathVariable("itemNumber") String itemNumber) {
         logger.info("ItemController byNumber() invoked for" + itemNumber);
         return itemService.byNumber(itemNumber);
+    }
+
+    @RequestMapping("/items/schedule/{time}")
+    public String schedule(@PathVariable("time") String time) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(Long.parseLong(time));
+        scheduler.schedule(new ScheduleThread(Long.parseLong(time), itemService), cal.getTime());
+        return "Done";
     }
 
     @RequestMapping(value = "/items/bid", method = RequestMethod.POST)
@@ -44,18 +52,6 @@ public class ItemController {
     public List<ItemDTO> bySeller(@PathVariable("name") String partialName) {
         logger.info("ItemController bySeller() invoked for " + partialName);
         return itemService.bySeller(partialName);
-    }
-
-    @RequestMapping("/items/schedule/{time}")
-    public String schedule(@PathVariable("time") String time) {
-        logger.info("ItemController schedule() invoked for " + time);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.parseLong(time));
-        //Scheduler scheduler = appContext.getBean(Scheduler.class);
-        //scheduler.schedule(new ScheduleThread(Long.parseLong(time)), calendar.getTime());
-        ScheduleThread scheduleThread = new ScheduleThread(Long.parseLong(time));
-        scheduleThread.start();
-        return "success";
     }
 
 }

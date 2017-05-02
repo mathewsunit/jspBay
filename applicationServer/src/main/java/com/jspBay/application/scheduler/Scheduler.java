@@ -13,17 +13,22 @@ import java.util.logging.Logger;
  * Created by scy11a on 5/1/17.
  */
 
+@Service
 public class Scheduler {
 
 	protected Logger logger = Logger.getLogger(Scheduler.class.getName());
+	private  ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
-	private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+	@Autowired
+	public Scheduler(ThreadPoolTaskScheduler threadPoolTaskScheduler) {
+		this.threadPoolTaskScheduler = threadPoolTaskScheduler;
+	}
 
 	public void schedule(Thread thread, Date startTime) {
 		logger.info("Schedule thread byNumber() invoked for " + thread.getName() + " after  " + startTime.toString() + " milli sec");
 		logger.info("threadPoolTaskScheduler pool size before scheduling: " + threadPoolTaskScheduler.getPoolSize());
-		threadPoolTaskScheduler.scheduleWithFixedDelay(thread, startTime, 0);
+		logger.info("threadPoolTaskScheduler: " + (threadPoolTaskScheduler == null));
+		threadPoolTaskScheduler.schedule(thread, startTime);
 		logger.info("threadPoolTaskScheduler pool size after scheduling: " + threadPoolTaskScheduler.getPoolSize());
 	}
-
 }
