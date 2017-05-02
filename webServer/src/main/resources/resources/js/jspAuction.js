@@ -1,5 +1,5 @@
 angular
-		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'home', 'message', 'navigation' ])
+		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'item', 'home', 'message', 'navigation', 'user','search'])
 		.provider('myCSRF',[function(){
            var headerName = 'X-CSRF-TOKEN';
            var cookieName = 'CSRF-TOKEN';
@@ -40,7 +40,27 @@ angular
 						templateUrl : 'js/navigation/login.html',
 						controller : 'navigation',
 						controllerAs : 'controller'
-					}).otherwise('/');
+                    }).when('/item/postItem', {
+                        templateUrl : 'js/item/postItem.html',
+                        controller : 'item',
+                        controllerAs : 'controller'
+					}).when('/item/:itemId', {
+                        templateUrl : 'js/item/item.html',
+                        controller : 'item',
+                        controllerAs : 'controller'
+					}).when('/user/create', {
+                        templateUrl : 'js/user/create.html',
+                        controller : 'user',
+                        controllerAs : 'controller'
+                    }).when('/search/:search', {
+                        templateUrl : 'js/search/search.html',
+                        controller : 'search',
+                        controllerAs : 'controller'
+                    }).when('/user/modify', {
+                        templateUrl : 'js/user/modify.html',
+                        controller : 'user',
+                        controllerAs : 'controller'
+                    }).otherwise('/');
 
                     $httpProvider.interceptors.push('myCSRF');
                     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

@@ -89,6 +89,14 @@ public class Bid extends ResourceSupport implements Serializable {
         this.created = created;
     }
 
+    public Bid(User bidder, Item item, BidStatus bidStatus, Date created, Long value){
+        this.bidder = bidder;
+        this.item = item;
+        this.created = created;
+        this.value = value;
+        this.bidStatus = bidStatus;
+    }
+
     public Bid(){
     }
 

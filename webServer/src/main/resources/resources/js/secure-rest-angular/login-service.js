@@ -3,7 +3,9 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
   enter = function() {
     console.log("Route Change Path ", $location.path())
     console.log($location.path(), "==", auth.path)
-    if ($location.path() != auth.loginPath) {
+    if ($location.path() === '/user/create'){
+      $location.path('/user/create');
+    }else if ($location.path() != auth.loginPath) {
       auth.path = $location.path();
       if (!auth.authenticated) {
         $location.path(auth.loginPath);
@@ -25,6 +27,12 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     }
   });
 
+  var lastlogResources = $resource('/user/lastlogin/update', {}, {
+      post: {
+        method: 'POST',
+        cache: false
+      }
+    });
   /**
    * Tries to detect whether the response elements returned indicate an invalid or missing CSRF token...
    */
@@ -45,6 +53,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     logoutPath: '/logout',
     homePath: '/',
     path: $location.path(),
+    geolocation: '',
 
     authenticate: function(credentials, callback) {
         // Obtain a CSRF token
@@ -69,6 +78,22 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
               if (response.status == 200) {
                 auth.username = response.data.name;
                 auth.authenticated = true;
+
+                $.getJSON('http://ip-api.com/json')
+                    .then(function(coordinates) {
+                        var myCoordinates = {};
+                        myCoordinates.lat = coordinates.lat;
+                        myCoordinates.lng = coordinates.lon;
+                        myCoordinates.city = coordinates.city;
+                        myCoordinates.region = coordinates.region;
+                        console.log('Coordinates',myCoordinates);
+                        lastlogResources.post(myCoordinates).$promise.then(
+                        function(response){
+                            auth.geolocation=myCoordinates;}
+                        ,function(error){
+                            console.log(error)});
+                },function(error){
+                    console.log('Error',error);});
               } else {
                 auth.authenticated = false;
               }
@@ -94,7 +119,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     },
 
     clear: function(successHandler, errorHandler) {
-
+        console.log('Whatsup');
       // Obtain a CSRF token
       logoutResources.options().$promise.then(function(response) {
         console.log('Obtained a CSRF token in a cookie', response);
@@ -156,12 +181,8 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
           ,function(response){
             console.log('User is not logged In');
             enter();
-            auth.authenticate({}, function(authenticated) {
-            if (authenticated) {
-              //          console.log("Yes :",auth.path)
-              $location.path(auth.path);
-            }
-            })})
+            auth.authenticated = false;
+            })
       });
     }
   };

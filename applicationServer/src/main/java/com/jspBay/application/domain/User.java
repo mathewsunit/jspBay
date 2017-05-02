@@ -37,7 +37,7 @@ public class User extends ResourceSupport implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public Long getUserId() {
+    public Long getId() {
         return id;
     }
 

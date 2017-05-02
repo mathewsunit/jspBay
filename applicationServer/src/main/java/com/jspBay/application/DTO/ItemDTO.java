@@ -1,6 +1,8 @@
 package com.jspBay.application.DTO;
 
 
+import com.jspBay.application.domain.Bid;
+import com.jspBay.application.domain.Item;
 import com.jspBay.application.enums.ItemStatus;
 
 import javax.validation.constraints.NotNull;
@@ -15,6 +17,8 @@ public class ItemDTO {
 
 
     @NotNull
+    private Long itemId;
+    @NotNull
     private Long itemCostMin;
     @NotNull
     private String itemName;
@@ -24,6 +28,26 @@ public class ItemDTO {
     private Date expiring;
     @NotNull
     private ItemStatus itemStatus;
+
+    private UserDTO seller;
+
+    private BidDTO currentBid;
+
+    private String errorMsg = null;
+
+	public ItemDTO(Item item) {
+	    this.itemId = item.getId();
+	    this.itemCostMin = item.getCost();
+	    this.itemName = item.getName();
+	    this.itemDesc = item.getDescription();
+	    this.expiring = item.getExpiring();
+	    this.itemStatus = item.getItemStatus();
+	    this.seller = null;
+	}
+
+	public BidDTO getCurrentBid() {
+        return currentBid;
+    }
 
     public ItemStatus getItemStatus() {
         return itemStatus;
@@ -65,11 +89,68 @@ public class ItemDTO {
         this.expiring = expiring;
     }
 
-    public ItemDTO(Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus) {
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public UserDTO getSeller() {
+        return seller;
+    }
+
+    private ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid, UserDTO seller) {
+        this.itemId = itemId;
         this.itemCostMin = itemCostMin;
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.expiring = expiring;
         this.itemStatus = itemStatus;
+        this.currentBid = currentBid;
+        this.seller = seller;
+    }
+
+    public ItemDTO(Item item, BidDTO currentBid) {
+        this(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), currentBid, new UserDTO(item.getSeller()));
+    }
+
+    public ItemDTO() {
+    }
+
+    public ItemDTO(String errorMsg) {
+	    this.itemId = (long) -1;
+        this.errorMsg = errorMsg;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
+    public void setSeller(UserDTO seller) {
+        this.seller = seller;
+    }
+
+    public void setCurrentBid(BidDTO currentBid) {
+        this.currentBid = currentBid;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDTO{" +
+                "itemId=" + itemId +
+                ", itemCostMin=" + itemCostMin +
+                ", itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", expiring=" + expiring +
+                ", itemStatus=" + itemStatus +
+                ", seller=" + seller +
+                ", currentBid=" + currentBid +
+                '}';
     }
 }

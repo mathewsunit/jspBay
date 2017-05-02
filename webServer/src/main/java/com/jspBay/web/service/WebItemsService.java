@@ -1,16 +1,26 @@
 package com.jspBay.web.service;
 
+import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
-import com.jspBay.web.exceptions.ItemNotFoundException;
+import com.jspBay.web.DTO.ResponseDTO;
+import com.jspBay.web.enums.BidStatus;
+import com.jspBay.web.enums.ItemStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -49,19 +59,23 @@ public class WebItemsService {
     }
 
     public ItemDTO findByNumber(String itemNumber) {
-
         logger.info("findByNumber() invoked: for " + itemNumber);
-        return restTemplate.getForObject(serviceUrl + "/item/{number}",
-                ItemDTO.class, itemNumber);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ItemDTO item = restTemplate.getForObject(serviceUrl + "/items/{number}", ItemDTO.class, itemNumber);
+        item.setCanUserBid(auth.getName(), Calendar.getInstance().getTime());
+        return item;
+    }
+
+    public BidDTO bidItem(ItemDTO itemDTO, String bidAmount, String bidderUserName) {
+        logger.info("bidItem() invoked:  for " + itemDTO.getItemId());
+        return restTemplate.postForObject(serviceUrl + "/items/bid/", new BidDTO(itemDTO.getItemId(), Long.parseLong(bidAmount), BidStatus.LEADING, itemDTO, bidderUserName), BidDTO.class);
     }
 
     public List<ItemDTO> bySellerContains(String name) {
         logger.info("bySellerContains() invoked:  for " + name);
         ItemDTO[] item = null;
-
         try {
-            item = restTemplate.getForObject(serviceUrl
-                    + "/items/seller/{name}", ItemDTO[].class, name);
+            item = restTemplate.getForObject(serviceUrl + "/items/seller/{name}", ItemDTO[].class, name);
         } catch (HttpClientErrorException e) { // 404
             // Nothing found
         }
@@ -72,30 +86,45 @@ public class WebItemsService {
             return Arrays.asList(item);
     }
 
-    public List<ItemDTO> byItemSearchContains(String name) {
-        logger.info("byItemSearchContains() invoked:  for " + name);
+    public List<ItemDTO> searchItems(String name, Authentication auth) {
+        logger.info("searchItems() invoked:  for " + name);
         ItemDTO[] item = null;
-
         try {
-            item = restTemplate.getForObject(serviceUrl
-                    + "/items/search/{name}", ItemDTO[].class, name);
+            item = restTemplate.getForObject(serviceUrl + "/search/{name}", ItemDTO[].class, name);
         } catch (HttpClientErrorException e) { // 404
             // Nothing found
         }
-
+        logger.info("searchItems() found:  for " + item);
+        List<ItemDTO> itemReturns = new ArrayList<>();
         if (item == null || item.length == 0)
             return null;
         else
-            return Arrays.asList(item);
+            for (ItemDTO itemDTO : item) {
+                String message = itemDTO.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), String.valueOf(Long.MAX_VALUE));
+                if (message == null) {
+                    itemReturns.add(itemDTO);
+                }
+            }
+        return itemReturns;
     }
 
-    public ItemDTO getByNumber(String itemNumber) {
-        ItemDTO account = restTemplate.getForObject(serviceUrl
-                + "/items/{number}", ItemDTO.class, itemNumber);
+    public ItemDTO createItem(String itemName, String itemDesc, String itemDeadline, String itemCost) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ItemDTO item = new ItemDTO(auth.getName(), itemName, itemDesc, itemDeadline, itemCost);
+        if(item.getErrorMsg() == null)
+            item = restTemplate.postForObject(serviceUrl + "/items/create", item, ItemDTO.class);
+        return item;
+    }
 
-        if (account == null)
-            throw new ItemNotFoundException(itemNumber);
+    public ResponseDTO<ItemDTO> removeItem(ItemDTO itemDTO, String currentUserName) {
+        if(!itemDTO.getSeller().getUserName().equals(currentUserName))
+            return new ResponseDTO<>("ERROR", "You are not authorized to remove this item as you are not the seller.");
+        else if(itemDTO.getItemStatus() != ItemStatus.ONSALE)
+            return new ResponseDTO<>("ERROR", "You cannot remove a item not in sale.");
+        else if(itemDTO.getExpiring().getTime() <= Calendar.getInstance().getTimeInMillis())
+            return new ResponseDTO<>("ERROR", "You cannot remove a item past its deadline.");
         else
-            return account;
+            return restTemplate.exchange(serviceUrl + "/items/remove", HttpMethod.POST, new HttpEntity<>(new ResponseDTO<ItemDTO>("SUCCESS", "Successfully called web server", itemDTO)), new ParameterizedTypeReference<ResponseDTO<ItemDTO>>() {}).getBody();
+            //return restTemplate.postForObject(serviceUrl + "/items/remove/", itemDTO, ResponseDTO.class);
     }
 }

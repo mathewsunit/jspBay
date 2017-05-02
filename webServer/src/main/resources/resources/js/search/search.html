@@ -1,0 +1,42 @@
+<div class="col-md-6" id="my_sold">
+    <h3 style="text-align:center;">Search Results</h3>
+    <table st-table="items" class="table-striped table_1" align="center">
+        <thead>
+            <tr>
+                <th st-sort="itemName">Product</th>
+                <th st-sort="currentBid.bidAmount">Bid</th>
+                <th st-sort="seller.userName">Seller</th>
+                <th st-sort="itemDesc">Description</th>
+                <th st-sort="expiring">Expiring</th>
+            </tr>
+            <tr>
+                <th>
+                    <input st-search="itemName" placeholder="search for itemName" class="input-sm form-control" type="search"/>
+                </th>
+                <th>
+                    <input st-search="currentBid.bidAmount" placeholder="search for currentBid.bidAmount" class="input-sm form-control" type="search"/>
+                </th>
+                <th>
+                    <input st-search="seller.userName" placeholder="search for seller.userName" class="input-sm form-control" type="search"/>
+                </th>
+                <th>
+                    <input st-search="itemDesc" placeholder="search for itemDesc" class="input-sm form-control" type="search"/>
+                </th>
+                <th>
+                    <input st-search="expiring" placeholder="search for expiring" class="input-sm form-control" type="search"/>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items">
+                <td><a ng-click="viewItem(item)">{{item.itemName}}</a></td>
+                <td>{{item.currentBid.bidAmount}}</td>
+                <td>{{item.seller.userName}}</td>
+                <td>{{item.itemDesc}}</td>
+                <td>{{item.expiring | date:'MM-dd HH:mm'}}</td>
+            </tr>
+            <tr ng-hide="items.length"><td colspan="2"> Item Not Found!</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

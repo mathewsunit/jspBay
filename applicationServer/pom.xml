@@ -124,6 +124,13 @@
             <artifactId>spring-hateoas</artifactId>
             <version>0.16.0.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

@@ -16,6 +16,12 @@ public class UserDTO {
     @NotNull
     private String email;
 
+    public UserDTO(String userName, String password, String email) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -38,5 +44,21 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    public UserDTO(String userName) {
+        this.userName = userName;
+    }
+
+    public UserDTO() {
     }
 }
