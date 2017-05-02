@@ -2,10 +2,15 @@ package com.jspBay.application.controller;
 
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
+import com.jspBay.application.scheduler.ScheduleThread;
+import com.jspBay.application.scheduler.Scheduler;
 import com.jspBay.application.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,6 +24,9 @@ public class ItemController {
 
     @Autowired
     protected ItemService itemService;
+
+    @Autowired
+    private ApplicationContext appContext;
 
     @RequestMapping("/items/{itemNumber}")
     public ItemDTO byNumber(@PathVariable("itemNumber") String itemNumber) {
@@ -37,4 +45,17 @@ public class ItemController {
         logger.info("ItemController bySeller() invoked for " + partialName);
         return itemService.bySeller(partialName);
     }
+
+    @RequestMapping("/items/schedule/{time}")
+    public String schedule(@PathVariable("time") String time) {
+        logger.info("ItemController schedule() invoked for " + time);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(Long.parseLong(time));
+        //Scheduler scheduler = appContext.getBean(Scheduler.class);
+        //scheduler.schedule(new ScheduleThread(Long.parseLong(time)), calendar.getTime());
+        ScheduleThread scheduleThread = new ScheduleThread(Long.parseLong(time));
+        scheduleThread.start();
+        return "success";
+    }
+
 }
