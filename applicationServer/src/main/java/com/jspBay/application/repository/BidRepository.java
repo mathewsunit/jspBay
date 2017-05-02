@@ -19,7 +19,9 @@ import java.util.List;
 public interface BidRepository extends CrudRepository<Bid, Long> {
     Bid findOneById(Long bidId);
     Bid findOneByItemAndBidStatus(Item item, BidStatus bidStatus);
-    List<Bid> findFirstByItemOrderByCreatedDesc(Item item);
+
+    List<Bid> findFirstByItemAndBidStatusNotOrderByValueDesc(Item item, BidStatus bidStatus);
+
     List<Bid> findByItem(Item item);
     int countByItem(Item item);
 

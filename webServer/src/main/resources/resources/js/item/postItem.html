@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <form method="post" ng-show="item.canUserBid">
+    <form method="post">
         <table class="item_table">
             <tr>
                 <td>Product Name: </td>
@@ -7,12 +7,11 @@
             </tr>
             <tr>
                 <td>Product Description: </td>
-
                 <td><textarea rows="4" cols="50" ng-model="newItem.desc"></textarea></td>
             </tr>
             <tr>
                 <td>Cost: </td>
-                <td><input type="number" ng-model="newItem.bidAmount" placeholder="Enter Bid Amount:"/></td>
+                <td><input type="number" ng-model="newItem.costAmount"/></td>
             </tr>
             <tr>
                 <td>Deadline: </td>
@@ -20,7 +19,7 @@
             </tr>
         </table>
 
-        <input type="submit" ng-click="sendForm(bidAmount)"/>
+        <input type="submit" ng-click="createItem(newItem)"/>
     </form>
-    <div ng-show="errorMessage" ng-model="errorMessage"></div>
+    <div ng-show="errorMessage.length">{{errorMessage}}</div>
 </div>

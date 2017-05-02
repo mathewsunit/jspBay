@@ -81,6 +81,15 @@ public class WebItemsService {
             return Arrays.asList(item);
     }
 
+    public ItemDTO createItem(String itemName, String itemDesc, String itemDeadline, String itemCost) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ItemDTO item = new ItemDTO(auth.getName(), itemName, itemDesc, itemDeadline, itemCost);
+        if(item.getErrorMsg() == null)
+            return restTemplate.postForObject(serviceUrl + "/items/create/", item, ItemDTO.class);
+        else
+            return item;
+    }
+
     /*
     public ItemDTO getByNumber(String itemNumber) {
         ItemDTO account = restTemplate.getForObject(serviceUrl + "/items/{number}", ItemDTO.class, itemNumber);

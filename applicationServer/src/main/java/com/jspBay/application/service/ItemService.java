@@ -6,11 +6,14 @@ import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
 import com.jspBay.application.domain.User;
+import com.jspBay.application.enums.BidStatus;
+import com.jspBay.application.enums.ItemStatus;
 import com.jspBay.application.exceptions.ItemNotFoundException;
 import com.jspBay.application.repository.BidRepository;
 import com.jspBay.application.repository.ItemRepository;
 import com.jspBay.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +58,7 @@ public class ItemService {
             throw new ItemNotFoundException(partialName);
         else {
             for(Item item:items) {
-                List<Bid> bids = bidRepository.findFirstByItemOrderByCreatedDesc(item);
+                List<Bid> bids = bidRepository.findFirstByItemAndBidStatusNotOrderByValueDesc(item, BidStatus.DELETED);
                 ItemDTO itemDTO = new ItemDTO(item, bids.size() == 1 ? new BidDTO(bids.get(0)) : null);
                 itemsDTO.add(itemDTO);
             }
@@ -72,7 +75,7 @@ public class ItemService {
         if (item == null) {
             throw new ItemNotFoundException(itemNumber);
         } else {
-            List<Bid> bids = bidRepository.findFirstByItemOrderByCreatedDesc(item);
+            List<Bid> bids = bidRepository.findFirstByItemAndBidStatusNotOrderByValueDesc(item, BidStatus.DELETED);
             return new ItemDTO(item, (bids.size() == 1) ? new BidDTO(bids.get(0), true) : null);
         }
     }
@@ -90,5 +93,19 @@ public class ItemService {
             return new BidDTO(newBid, false);
         }
 
+    }
+
+    public ItemDTO createItem(ItemDTO itemDTO) {
+        User seller = userRepository.findOneByUserName(itemDTO.getSeller().getUserName());
+        Item item = new Item(itemDTO.getItemName(), seller, itemDTO.getItemDesc(), itemDTO.getItemCostMin(), itemDTO.getExpiring(), Calendar.getInstance().getTime(), ItemStatus.ONSALE);
+        try {
+            item = itemRepository.save(item);
+        } catch (DataAccessException e) {
+            return new ItemDTO(e.getMessage());
+        }
+        /*
+            create Thread and execute the end of item.
+        */
+        return new ItemDTO(item);
     }
 }

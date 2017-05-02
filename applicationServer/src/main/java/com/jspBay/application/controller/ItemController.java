@@ -37,4 +37,10 @@ public class ItemController {
         logger.info("ItemController bySeller() invoked for " + partialName);
         return itemService.bySeller(partialName);
     }
+
+    @RequestMapping(value = "/items/create/", method = RequestMethod.POST)
+    public ItemDTO create(@RequestBody ItemDTO itemDTO) {
+        logger.info("ItemController byNumber() invoked for" + itemDTO);
+        return itemService.createItem(itemDTO);
+    }
 }

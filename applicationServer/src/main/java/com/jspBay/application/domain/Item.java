@@ -129,6 +129,16 @@ public class Item {
         this.name = "Lolzz"+String.valueOf(now);
     }
 
+    public Item(String name, User seller, String description, Long cost, Date expiring, Date created, ItemStatus itemStatus) {
+        this.name = name;
+        this.seller = seller;
+        this.description = description;
+        this.cost = cost;
+        this.expiring = expiring;
+        this.created = created;
+        this.itemStatus = itemStatus;
+    }
+
     public Item(){
     }
 }

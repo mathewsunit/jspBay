@@ -85,6 +85,18 @@ public class WebItemsController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping("/items/create")
+    public ResponseEntity<ItemDTO> createItem(@RequestBody String response) {
+        logger.info("WebItemsController bySeller() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            ItemDTO itemDTO = itemsService.createItem(result.get("itemName").toString(), result.get("itemDeadline").toString(), result.get("itemCost").toString(), result.get("itemDesc").toString());
+            return new ResponseEntity<>(itemDTO, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 //    @RequestMapping(value = "/items/search", method = RequestMethod.GET)
 //    public String searchForm(Model model) {
 //        model.addAttribute("searchCriteria", new SearchCriteria());
