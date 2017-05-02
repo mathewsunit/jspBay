@@ -2,6 +2,7 @@ package com.jspBay.application.controller;
 
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
+import com.jspBay.application.DTO.ResponseDTO;
 import com.jspBay.application.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,13 @@ public class ItemController {
 
     @RequestMapping(value = "/items/create/", method = RequestMethod.POST)
     public ItemDTO create(@RequestBody ItemDTO itemDTO) {
-        logger.info("ItemController byNumber() invoked for" + itemDTO);
+        logger.info("ItemController create() invoked for" + itemDTO);
         return itemService.createItem(itemDTO);
+    }
+
+    @RequestMapping(value = "/items/remove", method = RequestMethod.POST)
+    public ResponseDTO<ItemDTO> remove(@RequestBody ResponseDTO<ItemDTO> responseDTO) {
+        logger.info("ItemController remove() invoked for" + responseDTO.getObject());
+        return itemService.removeItem(responseDTO.getObject());
     }
 }

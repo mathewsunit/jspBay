@@ -2,6 +2,7 @@ package com.jspBay.application.service;
 
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
+import com.jspBay.application.DTO.ResponseDTO;
 import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
@@ -108,4 +109,18 @@ public class ItemService {
         */
         return new ItemDTO(item);
     }
+
+	public ResponseDTO<ItemDTO> removeItem(ItemDTO object) {
+        Item item = itemRepository.findOneById(object.getItemId());
+        item.setItemStatus(ItemStatus.REMOVED);
+        /*
+            Remove threads.
+        */
+        try {
+            item = itemRepository.save(item);
+            return new ResponseDTO<>("SUCCESS", "Successfully removed the item from sale.", new ItemDTO(item));
+        } catch (DataAccessException e) {
+            return new ResponseDTO<>("ERROR", e.getMessage());
+        }
+	}
 }

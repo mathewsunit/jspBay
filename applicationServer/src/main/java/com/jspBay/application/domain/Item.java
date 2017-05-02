@@ -4,6 +4,7 @@ import com.jspBay.application.enums.ItemStatus;
 import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -122,11 +123,12 @@ public class Item {
         this.buyer = buyer;
         this.description = description;
         this.cost = cost;
-        Date now = new Date();
-        this.created = now;
-        this.expiring = now;
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 1);
+        this.created = c.getTime();
+        this.expiring = c.getTime();
         this.itemStatus = ItemStatus.ONSALE;
-        this.name = "Lolzz"+String.valueOf(now);
+        this.name = "Lolzz"+String.valueOf(c.getTime());
     }
 
     public Item(String name, User seller, String description, Long cost, Date expiring, Date created, ItemStatus itemStatus) {

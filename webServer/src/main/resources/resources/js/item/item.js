@@ -35,9 +35,11 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
             post: {method: 'POST', cache: false, isArray: false},
             options: {method: 'OPTIONS', cache: false}
         });
+
         itemCall.get({itemId : $routeParams.itemId}).$promise.then(function(response) {
             $scope.item = response;
         });
+
         $scope.sendForm = function(amount) {
             console.log("Send form clicked");
             /*
@@ -57,7 +59,7 @@ angular.module('item', ['secure-rest-angular']).controller('item', function($rou
             });
             */
             bidCall.post({'itemNumber' : $routeParams.itemId, 'bidAmount' : amount}).$promise.then(function(response) {
-                console.log("Bid Response : " + response);
+                console.log("Bid Response : " + JSON.stringify(response));
                 if(response.id == -1) {
                     console.log("Got error message");
                     $scope.errorMessage = response.errorMessage;
