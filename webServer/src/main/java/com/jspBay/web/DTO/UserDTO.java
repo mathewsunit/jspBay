@@ -22,9 +22,6 @@ public class UserDTO {
         this.email = email;
     }
 
-    public UserDTO() {
-    }
-
     public String getUserName() {
         return userName;
     }

@@ -58,7 +58,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/*/**").permitAll()
                 .antMatchers("/login", "/", "/bower_components/**","/js/**","/css/**","/user/create**").permitAll()
-                .antMatchers("/logout", "/user/**", "/resource/**", "/items/**", "/bids/**").authenticated();
+                .antMatchers("/logout", "/user/**", "/resource/**", "/items/**", "/bids/**","/search/**").authenticated();
 
         // Handlers and entry points
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
@@ -85,9 +85,10 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.POST.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/items*/**", HttpMethod.POST.toString())),
-                        new NegatedRequestMatcher(new AntPathRequestMatcher("/user*/create*/**", HttpMethod.POST.toString())),
+                        new NegatedRequestMatcher(new AntPathRequestMatcher("/user*/**", HttpMethod.POST.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/bids*/**", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/user*/**", HttpMethod.GET.toString())),
+                        new NegatedRequestMatcher(new AntPathRequestMatcher("/search*/**", HttpMethod.GET.toString())),
 
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/", HttpMethod.GET.toString())),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/bower_components/**", HttpMethod.GET.toString())),

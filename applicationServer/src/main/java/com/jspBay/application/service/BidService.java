@@ -4,6 +4,7 @@ import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.User;
+import com.jspBay.application.enums.BidStatus;
 import com.jspBay.application.exceptions.BidNotFoundException;
 import com.jspBay.application.repository.BidRepository;
 import com.jspBay.application.repository.ItemRepository;
@@ -59,6 +60,23 @@ public class BidService {
             throw new BidNotFoundException(partialName);
 
         List<Bid> bids = bidRepository.findByBidder(user);
+        logger.info("bids-service byBidder() found: " + bids);
+
+        if (bids == null || bids.size() == 0)
+            throw new BidNotFoundException(partialName);
+        else {
+            List<BidDTO> bidDTOList = new ArrayList<>();
+            for(Bid bid : bids)
+                bidDTOList.add(new BidDTO(bid.getId(),bid.getValue(), bid.getBidStatus(), new ItemDTO(bid.getItem(), null), (long) -1));
+            return bidDTOList;
+        }
+    }
+
+    public List<BidDTO> topBidder(@PathVariable("name") String partialName) {
+        logger.info("bids-service byBidder() invoked for " + partialName);
+
+        List<Bid> bids = bidRepository.findTop3ByBidStatusOrderByValue(BidStatus.ACCEPTED);
+        bids = bidRepository.findTop3ByBidStatusOrderByValue(BidStatus.LEADING);
         logger.info("bids-service byBidder() found: " + bids);
 
         if (bids == null || bids.size() == 0)

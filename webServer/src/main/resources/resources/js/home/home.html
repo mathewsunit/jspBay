@@ -1,10 +1,14 @@
 <div>
     <div class="container-fluid" style="text-align:center;">
         <h1>Welcome {{controller.user}}</h1>
+        <div ng-hide="loginDetails.lastDate == null">
+        <h5>Your last login was at {{loginDetails.lastDate | date:'yyyy-MM-dd HH:mm:ss'}}</h5>
+        <h5>Your last login was at Latitude {{loginDetails.lattitude}}, Longitude {{loginDetails.longitude}} in the city of {{loginDetails.city}},{{loginDetails.region}}</h5>
+        </div>
         <br/>
         <div class="input-group" style="width:250px;text-align:center;margin:auto;">
-            <input type="text" class="form-control"/>
-            <span class="input-group-addon">
+            <input type="text" class="form-control" ng-model="searchVal" ng-keyup="keyPress($event.keyCode)"/>
+            <span class="input-group-addon" ng-click="search()">
 		        <i class="glyphicon glyphicon-search"></i>
 		    </span>
         </div>
@@ -13,10 +17,10 @@
             <h2 style="text-align:center;">My Items</h2>
             <div class="col-md-6" id="my_sold">
                 <h3 style="text-align:center;">Sold</h3>
-                <table class="table-striped table_1" align="center">
+                <table st-table="soldItems" st-safe-src="soldItemsDisplay" class="table table-striped">
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
+                        <th st-sort="itemId">Product</th>
+                        <th st-sort="currentBid.bidAmount">Price</th>
                     </tr>
                     <tr ng-repeat="item in soldItems">
                         <td><a ng-href="/items/{{item.itemId}}">{{item.itemName}}</a></td>
@@ -27,14 +31,25 @@
             </div>
             <div class="col-md-6" id="my_on_sale">
                 <h3 style="text-align:center;">On Sale</h3>
-                <table class="table-striped table_1" align="center">
+                <table st-table="onSaleItems" st-safe-src="onSaleItemsDisplay" class="table table-striped" align="center">
                     <tr>
-                        <th>Product</th>
-                        <th>Bid</th>
+                        <th st-sort="itemName">Product</th>
+                        <th st-sort="currentBid.bidAmount">Bid</th>
+                        <th st-sort="itemDesc">Description</th>
+                        <th st-sort="expiring">Expiring</th>
+                        <th>Delete Item!</th>
                     </tr>
                     <tr ng-repeat="item in onSaleItems">
                         <td><a ng-click="viewItem(item)">{{item.itemName}}</a></td>
                         <td>{{item.currentBid.bidAmount}}</td>
+                        <td>{{item.itemDesc}}</td>
+                        <td>{{item.expiring | date:'MM-dd HH:mm'}}</td>
+                        <td>
+                            <button type="button" ng-click="removeItem(item)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle">
+                                </i>
+                            </button>
+                        </td>
                     </tr>
                     <tr ng-hide="onSaleItems.length"><td colspan="2"> No items sold yet!</td></tr>
                 </table>
@@ -44,27 +59,37 @@
             <h2 style="text-align:center;">My Bids</h2>
             <div class="col-md-6" id="active_bids">
                 <h3 style="text-align:center;">Active</h3>
-                <table class="table-striped table_1" align="center">
+                <table st-table="activeBids" st-safe-src="activeBidsDisplay" class="table table-striped" align="center">
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>State</th>
+                        <th st-sort="item.itemName">Product</th>
+                        <th st-sort="bidAmount">Price</th>
+                        <th st-sort="bidStatus">State</th>
+                        <th st-sort="bid.item.expiring">Exp</th>
+                        <th>Delete Bid!</th>
+
                     </tr>
                     <tr ng-repeat="bid in activeBids">
                         <td>{{bid.item.itemName}}</td>
                         <td>{{bid.bidAmount}}</td>
                         <td>{{bid.bidStatus}}</td>
+                        <td>{{bid.item.expiring | date:'MM-dd HH:mm'}}</td>
+                        <td>
+                            <button type="button" ng-click="removeBid(bid)" class="btn btn-sm btn-danger">
+                                <i class="glyphicon glyphicon-remove-circle">
+                                </i>
+                            </button>
+                        </td>
                     </tr>
                     <tr ng-hide="activeBids.length"><td colspan="3"> No items sold yet!</td></tr>
                 </table>
             </div>
             <div class="col-md-6" id="closed_bids">
                 <h3 style="text-align:center;">Closed</h3>
-                <table class="table-striped table_1" align="center">
+                <table st-table="closedBids" st-safe-src="closedBidsDisplay" class="table table-striped" align="center">
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>State</th>
+                        <th st-sort="item.itemName">Product</th>
+                        <th st-sort="bidAmount">Price</th>
+                        <th st-sort="bidStatus">State</th>
                     </tr>
                     <tr ng-repeat="bid in closedBids">
                         <td>{{bid.item.itemName}}</td>

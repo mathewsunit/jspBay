@@ -28,4 +28,6 @@ public interface BidRepository extends CrudRepository<Bid, Long> {
 
     @Query("SELECT count(*) from Bid")
     String countBids();
+
+    List<Bid> findTop3ByBidStatusOrderByValue(BidStatus bidStatus);
 }

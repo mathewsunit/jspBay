@@ -27,6 +27,12 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     }
   });
 
+  var lastlogResources = $resource('/user/lastlogin/update', {}, {
+      post: {
+        method: 'POST',
+        cache: false
+      }
+    });
   /**
    * Tries to detect whether the response elements returned indicate an invalid or missing CSRF token...
    */
@@ -47,6 +53,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     logoutPath: '/logout',
     homePath: '/',
     path: $location.path(),
+    geolocation: '',
 
     authenticate: function(credentials, callback) {
         // Obtain a CSRF token
@@ -71,6 +78,22 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
               if (response.status == 200) {
                 auth.username = response.data.name;
                 auth.authenticated = true;
+
+                $.getJSON('http://ip-api.com/json')
+                    .then(function(coordinates) {
+                        var myCoordinates = {};
+                        myCoordinates.lat = coordinates.lat;
+                        myCoordinates.lng = coordinates.lon;
+                        myCoordinates.city = coordinates.city;
+                        myCoordinates.region = coordinates.region;
+                        console.log('Coordinates',myCoordinates);
+                        lastlogResources.post(myCoordinates).$promise.then(
+                        function(response){
+                            auth.geolocation=myCoordinates;}
+                        ,function(error){
+                            console.log(error)});
+                },function(error){
+                    console.log('Error',error);});
               } else {
                 auth.authenticated = false;
               }
@@ -96,7 +119,7 @@ angular.module('secure-rest-angular').factory('Login', function($http, $resource
     },
 
     clear: function(successHandler, errorHandler) {
-
+        console.log('Whatsup');
       // Obtain a CSRF token
       logoutResources.options().$promise.then(function(response) {
         console.log('Obtained a CSRF token in a cookie', response);

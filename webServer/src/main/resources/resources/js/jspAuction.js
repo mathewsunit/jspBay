@@ -1,5 +1,5 @@
 angular
-		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'item', 'home', 'message', 'navigation', 'user'])
+		.module('jspAuction', [ 'ngRoute','ngCookies','ngCookies','ngResource', 'secure-rest-angular', 'item', 'home', 'message', 'navigation', 'user','search'])
 		.provider('myCSRF',[function(){
            var headerName = 'X-CSRF-TOKEN';
            var cookieName = 'CSRF-TOKEN';
@@ -50,6 +50,14 @@ angular
                         controllerAs : 'controller'
 					}).when('/user/create', {
                         templateUrl : 'js/user/create.html',
+                        controller : 'user',
+                        controllerAs : 'controller'
+                    }).when('/search/:search', {
+                        templateUrl : 'js/search/search.html',
+                        controller : 'search',
+                        controllerAs : 'controller'
+                    }).when('/user/modify', {
+                        templateUrl : 'js/user/modify.html',
                         controller : 'user',
                         controllerAs : 'controller'
                     }).otherwise('/');

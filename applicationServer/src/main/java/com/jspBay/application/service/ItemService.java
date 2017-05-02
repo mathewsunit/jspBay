@@ -2,7 +2,6 @@ package com.jspBay.application.service;
 
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
-import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
 import com.jspBay.application.domain.User;
@@ -51,6 +50,24 @@ public class ItemService {
         List<ItemDTO> itemsDTO = new ArrayList<>();
         List<Item> items = itemRepository.findBySeller(user);
         logger.info("items-service bySeller() found: " + items);
+        if (items == null || items.size() == 0)
+            throw new ItemNotFoundException(partialName);
+        else {
+            for(Item item:items) {
+                List<Bid> bids = bidRepository.findFirstByItemOrderByCreatedDesc(item);
+                ItemDTO itemDTO = new ItemDTO(item, bids.size() == 1 ? new BidDTO(bids.get(0)) : null);
+                itemsDTO.add(itemDTO);
+            }
+            return itemsDTO;
+        }
+    }
+
+    public List<ItemDTO> bySearchTerm(String partialName) {
+        logger.info("items-service bySearchTerm() invoked: " + itemRepository.getClass().getName() + " for " + partialName);
+
+        List<ItemDTO> itemsDTO = new ArrayList<>();
+        List<Item> items = itemRepository.findBySearch(partialName);
+        logger.info("items-service bySearchTerm() found: " + items);
         if (items == null || items.size() == 0)
             throw new ItemNotFoundException(partialName);
         else {

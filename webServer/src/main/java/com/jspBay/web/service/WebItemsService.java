@@ -3,7 +3,6 @@ package com.jspBay.web.service;
 import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
 import com.jspBay.web.enums.BidStatus;
-import com.jspBay.web.exceptions.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -14,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -79,6 +79,27 @@ public class WebItemsService {
             return null;
         else
             return Arrays.asList(item);
+    }
+
+    public List<ItemDTO> searchItems(String name, Authentication auth) {
+        logger.info("searchItems() invoked:  for " + name);
+        ItemDTO[] item = null;
+        try {
+            item = restTemplate.getForObject(serviceUrl + "/search/{name}", ItemDTO[].class, name);
+        } catch (HttpClientErrorException e) { // 404
+            // Nothing found
+        }
+        List<ItemDTO> itemReturns = new ArrayList<>();
+        if (item == null || item.length == 0)
+            return null;
+        else
+            for(ItemDTO itemDTO:item){
+                String message = itemDTO.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(),String.valueOf(Long.MAX_VALUE));
+                if(message == null) {
+                    itemReturns.add(itemDTO);
+                }
+            }
+            return itemReturns;
     }
 
     /*

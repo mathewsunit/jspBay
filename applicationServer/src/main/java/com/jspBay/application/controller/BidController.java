@@ -34,4 +34,10 @@ public class BidController {
         logger.info("BidController byBidder() invoked for " + partialName);
         return bidService.byBidder(partialName);
     }
+
+    @RequestMapping("/bids/top/{name}")
+    public List<BidDTO> topBidder(@PathVariable("name") String partialName) {
+        logger.info("BidController topBidder() invoked for " + partialName);
+        return bidService.topBidder(partialName);
+    }
 }

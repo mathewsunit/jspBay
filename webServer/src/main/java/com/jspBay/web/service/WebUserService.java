@@ -1,5 +1,6 @@
 package com.jspBay.web.service;
 
+import com.jspBay.web.DTO.LocationDTO;
 import com.jspBay.web.DTO.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,9 +61,37 @@ public class WebUserService {
         return null;
     }
 
+    public UserDTO findByEmail(String email) {
+        logger.info("findByEmail() invoked: for " + email);
+        try {
+            UserDTO response = restTemplate.getForObject(serviceUrl + "/user/email/{email}/",
+                    UserDTO.class, email);
+            return response;
+        } catch (HttpClientErrorException ex)   {
+            if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
+                return null;
+            }
+        }
+        return null;
+    }
+
     public ResponseEntity<UserDTO> createNewUser(UserDTO user) {
         logger.info("createNewUser() invoked: for " + user.getUserName());
-
         return restTemplate.postForEntity(serviceUrl + "/user/create",user,UserDTO.class);
+    }
+
+    public ResponseEntity<LocationDTO> updateLocation(LocationDTO locationDTO) {
+        logger.info("updateLocation() invoked: for " + locationDTO.getUser());
+        return restTemplate.postForEntity(serviceUrl + "/user/updateLocation",locationDTO,LocationDTO.class);
+    }
+
+    public ResponseEntity<LocationDTO> getLocation(LocationDTO locationDTO) {
+        logger.info("getLocation() invoked: for " + locationDTO.getUser());
+        return restTemplate.postForEntity(serviceUrl + "/user/getLocation",locationDTO,LocationDTO.class);
+    }
+
+    public ResponseEntity<UserDTO> modifyUser(UserDTO user) {
+        logger.info("modifyUser() invoked: for " + user.getUserName());
+        return restTemplate.postForEntity(serviceUrl + "/user/modify",user,UserDTO.class);
     }
 }

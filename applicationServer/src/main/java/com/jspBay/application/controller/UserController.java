@@ -1,6 +1,7 @@
 package com.jspBay.application.controller;
 
 
+import com.jspBay.application.DTO.LocationDTO;
 import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.exceptions.UserNotFoundException;
 import com.jspBay.application.service.UserService;
@@ -45,6 +46,22 @@ public class UserController {
     /**
      * Fetch an item with the specified item number.
      *
+     * @param email
+     *            A userName
+     * @return The user if found.
+     * @throws UserNotFoundException
+     *             If the userName is not recognised.
+     */
+    @RequestMapping("/user/email/{email}")
+    public UserDTO byEmail(@PathVariable("email") String email) {
+
+        logger.info("user-controller byEmail() invoked: " + email);
+        return userService.byEmail(email);
+    }
+
+    /**
+     * Fetch an item with the specified item number.
+     *
      *
      * @return The user if found.
      * @throws UserNotFoundException
@@ -55,6 +72,43 @@ public class UserController {
 
         logger.info("user-controller createNewUser() invoked: " + userDTO.getUserName());
         return userService.createNewUser(userDTO);
+    }
+
+    /**
+     * Fetch an item with the specified item number.
+     *
+     *
+     * @return The user if found.
+     * @throws UserNotFoundException
+     *             If the userName is not recognised.
+     */
+    @RequestMapping("/user/modify")
+    public UserDTO modifyUser(@RequestBody UserDTO userDTO) {
+
+        logger.info("user-controller modifyUser() invoked: " + userDTO.getUserName());
+        return userService.modifyUser(userDTO);
+    }
+
+    /**
+     * Fetch an item with the specified item number.
+     *
+     *
+     * @return The user if found.
+     * @throws UserNotFoundException
+     *             If the userName is not recognised.
+     */
+    @RequestMapping("/user/updateLocation")
+    public LocationDTO updateLocation(@RequestBody LocationDTO locationDTO) {
+
+        logger.info("user-controller updateLocation() invoked: " + locationDTO.getUser());
+        return userService.updateLocation(locationDTO);
+    }
+
+    @RequestMapping("/user/getLocation")
+    public LocationDTO getLocation(@RequestBody LocationDTO locationDTO) {
+
+        logger.info("user-controller updateLocation() invoked: " + locationDTO.getUser());
+        return userService.getLocation(locationDTO);
     }
 
     /**
