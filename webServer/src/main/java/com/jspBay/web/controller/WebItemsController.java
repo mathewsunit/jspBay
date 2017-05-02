@@ -3,6 +3,7 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
+import com.jspBay.web.DTO.ResponseDTO;
 import com.jspBay.web.service.WebItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,6 +84,35 @@ public class WebItemsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping("/items/create")
+    public ResponseEntity<ItemDTO> createItem(@RequestBody String response) {
+        logger.info("WebItemsController createItem() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            ItemDTO itemDTO = itemsService.createItem(result.get("itemName").toString(), result.get("itemDesc").toString(), result.get("itemDeadline").toString(), result.get("itemCost").toString());
+            logger.info("WebItemsController createItem() returned: " + itemDTO.toString());
+            return new ResponseEntity<>(itemDTO, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/items/remove", method = RequestMethod.POST)
+    public ResponseEntity<ResponseDTO> removeItem(@RequestBody String response) {
+        logger.info("WebItemsController removeItem() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            String itemId = (String) result.get("itemId");
+            ItemDTO itemDTO = itemsService.findByNumber(String.valueOf(itemId));
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            ResponseDTO responseDTO = itemsService.removeItem(itemDTO, auth.getName());
+            logger.info("WebItemsController createItem() returned: " + responseDTO.toString());
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 //    @RequestMapping(value = "/items/search", method = RequestMethod.GET)

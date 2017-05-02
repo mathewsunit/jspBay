@@ -22,6 +22,8 @@ public class BidDTO {
 
     private Long bidderId;
 
+    private Long id;
+
     private ItemDTO item;
 
     public BidStatus getBidStatus() {
@@ -70,6 +72,7 @@ public class BidDTO {
 
     public BidDTO(Bid bid, boolean shouldGetBidder) {
         this(bid.getItem().getId(), bid.getValue(), bid.getBidStatus(), null, bid.getBidder().getId());
+        this.id = bid.getId();
         if(shouldGetBidder)
             this.bidder = new UserDTO(bid.getBidder());
     }
@@ -80,6 +83,18 @@ public class BidDTO {
         this.bidStatus = bidStatus;
         this.item = item;
         this.bidderId = bidderId;
+    }
+
+    public void setBidderId(Long bidderId) {
+        this.bidderId = bidderId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setBidder(UserDTO bidder) {

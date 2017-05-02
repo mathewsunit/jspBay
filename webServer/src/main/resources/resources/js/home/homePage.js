@@ -50,8 +50,11 @@ angular.module('home', ['secure-rest-angular']).controller('home', function($coo
         });
 	});
 
-	$scope.viewItem = function(item)
-    {
+	$scope.viewItem = function(item) {
        $location.path('/item/' + item.itemId);
+    };
+
+    $scope.postItem = function() {
+       $location.path('/item/postItem');
     };
 });

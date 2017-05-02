@@ -69,7 +69,6 @@ public class BidDTO {
     }
 
     public BidDTO(Long itemId, Long bidAmount, BidStatus bidStatus, ItemDTO item, String bidderUserName) {
-        this.id = id;
         this.itemId = itemId;
         this.bidAmount = bidAmount;
         this.bidStatus = bidStatus;
@@ -107,5 +106,21 @@ public class BidDTO {
                 ", errorMessage='" + errorMessage + '\'' +
                 ", item=" + item +
                 '}';
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setBidder(UserDTO bidder) {
+        this.bidder = bidder;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public void setItem(ItemDTO item) {
+        this.item = item;
     }
 }

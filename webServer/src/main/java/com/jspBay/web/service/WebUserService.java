@@ -49,8 +49,7 @@ public class WebUserService {
     public UserDTO findByUserName(String userName) {
         logger.info("findByUserName() invoked: for " + userName);
         try {
-            UserDTO response = restTemplate.getForObject(serviceUrl + "/user/{userName}",
-                    UserDTO.class, userName);
+            UserDTO response = restTemplate.getForObject(serviceUrl + "/user/{userName}", UserDTO.class, userName);
             return response;
         } catch (HttpClientErrorException ex)   {
             if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {

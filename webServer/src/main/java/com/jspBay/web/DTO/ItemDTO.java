@@ -34,7 +34,24 @@ public class ItemDTO {
 
     private boolean canUserBid;
 
-    public ItemStatus getItemStatus() {
+    private String errorMsg;
+
+	public ItemDTO(String userName, String itemName, String itemDesc, String itemDeadline, String itemCost) {
+        Calendar calendar = Calendar.getInstance();
+	    if(Long.parseLong(itemDeadline) < calendar.getTimeInMillis()) {
+	        this.itemId = (long) -1;
+            this.errorMsg = "Deadline cannot be less than the current time.";
+        } else {
+            calendar.setTimeInMillis(Long.parseLong(itemDeadline));
+            this.seller = new UserDTO(userName);
+            this.itemName = itemName;
+            this.itemDesc = itemDesc;
+            this.expiring = calendar.getTime();
+            this.itemCostMin = Long.parseLong(itemCost);
+        }
+	}
+
+	public ItemStatus getItemStatus() {
         return itemStatus;
     }
 
@@ -95,6 +112,8 @@ public class ItemDTO {
     }
 
     public String getCanUserBid(String currentUserName, Date currentDate, String bidAmount) {
+        if(this.getItemStatus() != ItemStatus.ONSALE)
+            return "You cannot bid on an item which is not on sale.";
         if(currentUserName.equals(this.seller.getUserName()))
             return "You cannot bid on your own item.";
         else if(this.getExpiring().getTime() > currentDate.getTime())
@@ -103,6 +122,30 @@ public class ItemDTO {
             return "Bid amount should be more than than the current bid";
         else
             return null;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
+    public void setSeller(UserDTO seller) {
+        this.seller = seller;
+    }
+
+    public void setCurrentBid(BidDTO currentBid) {
+        this.currentBid = currentBid;
+    }
+
+    public void setCanUserBid(boolean canUserBid) {
+        this.canUserBid = canUserBid;
     }
 
     public ItemDTO(Long itemId, Long itemCostMin, String itemName, String itemDesc, Date expiring, ItemStatus itemStatus, BidDTO currentBid, UserDTO seller) {
