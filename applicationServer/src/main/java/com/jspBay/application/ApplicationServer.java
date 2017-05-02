@@ -57,9 +57,9 @@ public class ApplicationServer {
     public CommandLineRunner demo(UserRepository userRepository, ItemRepository itemRepository, BidRepository bidRepository) {
         return (args) -> {
             //save a couple of players
-            User ala = new User("ala", "ala@ala.com", new BCryptPasswordEncoder().encode("ala"));
+            User ala = new User("ala", "pruthvi.vooka@hotmail.com", new BCryptPasswordEncoder().encode("ala"));
             userRepository.save(ala);
-            User mary = new User("mary", "mary@mary.com",  new BCryptPasswordEncoder().encode("mary"));
+            User mary = new User("mary", "mathewsunit@gmail.com",  new BCryptPasswordEncoder().encode("mary"));
             userRepository.save(mary);
             Item item1 = new Item(ala,mary,"blah",(long) 100);
             itemRepository.save(item1);

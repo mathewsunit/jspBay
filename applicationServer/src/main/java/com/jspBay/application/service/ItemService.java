@@ -17,17 +17,22 @@ import com.jspBay.application.scheduler.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.util.Assert;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -127,9 +132,61 @@ public class ItemService {
             });
             item.setItemStatus(ItemStatus.SOLD);
             item = itemRepository.save(item);
-            /*
-                Send Email
-            */
+            String  d_email = "jpabay12345@gmail.com",
+                    d_uname = "jpabay12345@gmail.com",
+                    d_password = "password strength",
+                    d_host = "smtp.gmail.com",
+                    d_port  = "465",
+                    bid_subject = item.getName() + "'s Auction has ended and you won the bid!",
+                    seller_subject = item.getName() + "'s Auction has ended.",
+                    m_text = item.getName() + "\n" + item.getDescription();
+
+
+            Properties props = new Properties();
+            props.put("mail.smtp.user", d_email);
+            props.put("mail.smtp.host", d_host);
+            props.put("mail.smtp.port", d_port);
+            props.put("mail.smtp.starttls.enable","true");
+            props.put("mail.smtp.debug", "true");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.socketFactory.port", d_port);
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.socketFactory.fallback", "false");
+
+            Session session = Session.getInstance(props, null);
+            session.setDebug(true);
+
+            MimeMessage sendMsg = new MimeMessage(session);
+            try {
+                sendMsg.setSubject(seller_subject);
+                sendMsg.setFrom(new InternetAddress(d_email));
+                sendMsg.addRecipient(Message.RecipientType.TO, new InternetAddress(item.getSeller().getEmail()));
+                sendMsg.setText(m_text);
+
+                Transport transport = session.getTransport("smtps");
+                transport.connect(d_host, Integer.valueOf(d_port), d_uname, d_password);
+                transport.sendMessage(sendMsg, sendMsg.getAllRecipients());
+                transport.close();
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            if(currentBid != null) {
+                MimeMessage bidderMsg = new MimeMessage(session);
+                try {
+                    bidderMsg.setSubject(bid_subject);
+                    bidderMsg.setFrom(new InternetAddress(d_email));
+                    bidderMsg.addRecipient(Message.RecipientType.TO, new InternetAddress(currentBid.getBidder().getEmail()));
+                    bidderMsg.setText(m_text);
+                    Transport transport = session.getTransport("smtps");
+                    transport.connect(d_host, Integer.valueOf(d_port), d_uname, d_password);
+                    transport.sendMessage(bidderMsg, bidderMsg.getAllRecipients());
+                    transport.close();
+
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            }
             return new ItemDTO(item);
         } else {
             logger.info("Item not found!");
