@@ -33,7 +33,19 @@ public class ItemDTO {
 
     private BidDTO currentBid;
 
-    public BidDTO getCurrentBid() {
+    private String errorMsg = null;
+
+	public ItemDTO(Item item) {
+	    this.itemId = item.getId();
+	    this.itemCostMin = item.getCost();
+	    this.itemName = item.getName();
+	    this.itemDesc = item.getDescription();
+	    this.expiring = item.getExpiring();
+	    this.itemStatus = item.getItemStatus();
+	    this.seller = null;
+	}
+
+	public BidDTO getCurrentBid() {
         return currentBid;
     }
 
@@ -103,6 +115,11 @@ public class ItemDTO {
     public ItemDTO() {
     }
 
+    public ItemDTO(String errorMsg) {
+	    this.itemId = (long) -1;
+        this.errorMsg = errorMsg;
+    }
+
     public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
@@ -113,6 +130,14 @@ public class ItemDTO {
 
     public void setCurrentBid(BidDTO currentBid) {
         this.currentBid = currentBid;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 
     @Override

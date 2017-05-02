@@ -1,12 +1,11 @@
 package com.jspBay.application.controller;
 
 import com.jspBay.application.DTO.BidDTO;
+import com.jspBay.application.DTO.ResponseDTO;
 import com.jspBay.application.repository.BidRepository;
 import com.jspBay.application.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,9 +34,9 @@ public class BidController {
         return bidService.byBidder(partialName);
     }
 
-    @RequestMapping("/bids/top/{name}")
-    public List<BidDTO> topBidder(@PathVariable("name") String partialName) {
-        logger.info("BidController topBidder() invoked for " + partialName);
-        return bidService.topBidder(partialName);
+    @RequestMapping(value = "/bids/remove", method = RequestMethod.POST)
+    public ResponseDTO<BidDTO> remove(@RequestBody ResponseDTO<BidDTO> responseDTO) {
+        logger.info("ItemController remove() invoked for" + responseDTO.getObject());
+        return bidService.removeItem(responseDTO.getObject());
     }
 }

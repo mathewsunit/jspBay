@@ -40,12 +40,12 @@ angular
 						templateUrl : 'js/navigation/login.html',
 						controller : 'navigation',
 						controllerAs : 'controller'
-					}).when('/item/:itemId', {
-                        templateUrl : 'js/item/item.html',
+                    }).when('/item/postItem', {
+                        templateUrl : 'js/item/postItem.html',
                         controller : 'item',
                         controllerAs : 'controller'
-                    }).when('/item/create', {
-                        templateUrl : 'js/item/create.html',
+					}).when('/item/:itemId', {
+                        templateUrl : 'js/item/item.html',
                         controller : 'item',
                         controllerAs : 'controller'
 					}).when('/user/create', {

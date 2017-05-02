@@ -2,10 +2,15 @@ package com.jspBay.web.service;
 
 import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
+import com.jspBay.web.DTO.ResponseDTO;
 import com.jspBay.web.enums.BidStatus;
+import com.jspBay.web.enums.ItemStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -93,23 +98,32 @@ public class WebItemsService {
         if (item == null || item.length == 0)
             return null;
         else
-            for(ItemDTO itemDTO:item){
-                String message = itemDTO.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(),String.valueOf(Long.MAX_VALUE));
-                if(message == null) {
+            for (ItemDTO itemDTO : item) {
+                String message = itemDTO.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), String.valueOf(Long.MAX_VALUE));
+                if (message == null) {
                     itemReturns.add(itemDTO);
                 }
             }
-            return itemReturns;
+        return itemReturns;
     }
 
-    /*
-    public ItemDTO getByNumber(String itemNumber) {
-        ItemDTO account = restTemplate.getForObject(serviceUrl + "/items/{number}", ItemDTO.class, itemNumber);
-        if (account == null)
-            throw new ItemNotFoundException(itemNumber);
+    public ItemDTO createItem(String itemName, String itemDesc, String itemDeadline, String itemCost) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ItemDTO item = new ItemDTO(auth.getName(), itemName, itemDesc, itemDeadline, itemCost);
+        if(item.getErrorMsg() == null)
+            item = restTemplate.postForObject(serviceUrl + "/items/create", item, ItemDTO.class);
+        return item;
+    }
+
+    public ResponseDTO<ItemDTO> removeItem(ItemDTO itemDTO, String currentUserName) {
+        if(!itemDTO.getSeller().getUserName().equals(currentUserName))
+            return new ResponseDTO<>("ERROR", "You are not authorized to remove this item as you are not the seller.");
+        else if(itemDTO.getItemStatus() != ItemStatus.ONSALE)
+            return new ResponseDTO<>("ERROR", "You cannot remove a item not in sale.");
+        else if(itemDTO.getExpiring().getTime() <= Calendar.getInstance().getTimeInMillis())
+            return new ResponseDTO<>("ERROR", "You cannot remove a item past its deadline.");
         else
-            return account;
+            return restTemplate.exchange(serviceUrl + "/items/remove", HttpMethod.POST, new HttpEntity<>(new ResponseDTO<ItemDTO>("SUCCESS", "Successfully called web server", itemDTO)), new ParameterizedTypeReference<ResponseDTO<ItemDTO>>() {}).getBody();
+            //return restTemplate.postForObject(serviceUrl + "/items/remove/", itemDTO, ResponseDTO.class);
     }
-
-    */
 }

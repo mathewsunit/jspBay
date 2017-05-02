@@ -80,41 +80,49 @@ angular.module('home', ['secure-rest-angular','smart-table']).controller('home',
         });
 	});
 
-	lastlogResources.get().$promise.then(function(response) {
-	    console.log('GET login returned: ', response);
-	    $scope.loginDetails = response;
-	},function(){
-	});
-
-	$scope.viewItem = function(item)
-    {
+    $scope.viewItem = function(item) {
        $location.path('/item/' + item.itemId);
     };
 
-    $scope.search = function()
-    {
-    if ($scope.searchVal) {
-            $location.path('/search/' + $scope.searchVal);
-        }
+    $scope.postItem = function() {
+       $location.path('/item/postItem');
     };
 
-    $scope.keyPress = function(keyCode){
-       console.log(keyCode);
-      if(keyCode == 13)
+    	lastlogResources.get().$promise.then(function(response) {
+    	    console.log('GET login returned: ', response);
+    	    $scope.loginDetails = response;
+    	},function(){
+    	});
+
+    	$scope.viewItem = function(item)
         {
-          if ($scope.searchVal) {
-              $location.path('/search/' + $scope.searchVal);
-          }
-        }
-    };
+           $location.path('/item/' + item.itemId);
+        };
 
-    $scope.removeItem = function(itemR)
-    {
-        console.log('You are goung to remove ',itemR)
-    };
+        $scope.search = function()
+        {
+        if ($scope.searchVal) {
+                $location.path('/search/' + $scope.searchVal);
+            }
+        };
 
-    $scope.removeBid = function(bidR)
-    {
-        console.log('You are goung to remove ',bidR)
-    };
+        $scope.keyPress = function(keyCode){
+           console.log(keyCode);
+          if(keyCode == 13)
+            {
+              if ($scope.searchVal) {
+                  $location.path('/search/' + $scope.searchVal);
+              }
+            }
+        };
+
+        $scope.removeItem = function(itemR)
+        {
+            console.log('You are goung to remove ',itemR)
+        };
+
+        $scope.removeBid = function(bidR)
+        {
+            console.log('You are goung to remove ',bidR)
+        };
 });

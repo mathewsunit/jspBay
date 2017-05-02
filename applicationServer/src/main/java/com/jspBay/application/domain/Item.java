@@ -4,6 +4,7 @@ import com.jspBay.application.enums.ItemStatus;
 import org.hibernate.annotations.Check;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,7 +25,7 @@ public class Item {
     private User seller;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id", nullable = false)
+    @JoinColumn(name = "buyer_id")
     private User buyer;
 
     @Enumerated(EnumType.STRING)
@@ -122,11 +123,22 @@ public class Item {
         this.buyer = buyer;
         this.description = description;
         this.cost = cost;
-        Date now = new Date();
-        this.created = now;
-        this.expiring = now;
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 1);
+        this.created = c.getTime();
+        this.expiring = c.getTime();
         this.itemStatus = ItemStatus.ONSALE;
-        this.name = "Lolzz"+String.valueOf(now);
+        this.name = "Lolzz"+String.valueOf(c.getTime());
+    }
+
+    public Item(String name, User seller, String description, Long cost, Date expiring, Date created, ItemStatus itemStatus) {
+        this.name = name;
+        this.seller = seller;
+        this.description = description;
+        this.cost = cost;
+        this.expiring = expiring;
+        this.created = created;
+        this.itemStatus = itemStatus;
     }
 
     public Item(){
