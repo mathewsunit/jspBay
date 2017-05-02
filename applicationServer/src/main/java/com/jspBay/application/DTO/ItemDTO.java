@@ -36,7 +36,7 @@ public class ItemDTO {
     private String errorMsg = null;
 
 	public ItemDTO(Item item) {
-	    this.itemId = item.getId();
+	    this.itemId = item.getItemId();
 	    this.itemCostMin = item.getCost();
 	    this.itemName = item.getName();
 	    this.itemDesc = item.getDescription();
@@ -109,7 +109,7 @@ public class ItemDTO {
     }
 
     public ItemDTO(Item item, BidDTO currentBid) {
-        this(item.getId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), currentBid, new UserDTO(item.getSeller()));
+        this(item.getItemId(), item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus(), currentBid, new UserDTO(item.getSeller()));
     }
 
     public ItemDTO() {

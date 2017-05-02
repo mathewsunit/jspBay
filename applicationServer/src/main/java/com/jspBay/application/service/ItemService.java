@@ -99,6 +99,24 @@ public class ItemService {
         }
     }
 
+    public List<ItemDTO> byItemSearch(String partialName) {
+        logger.info("items-service byItemSearch() invoked for "
+                + partialName);
+
+        List<ItemDTO> itemsDTO = new ArrayList<>();
+        List<Item> items = itemRepository.findByNameContainingIgnoreCase(partialName);
+        logger.info("items-service byItemSearch() found: " + items);
+        if (items == null || items.size() == 0)
+            throw new ItemNotFoundException(partialName);
+        else {
+            for(Item item:items){
+                ItemDTO itemDTO = new ItemDTO(item);
+                itemsDTO.add(itemDTO);
+            }
+            return itemsDTO;
+        }
+    }
+
     public ItemDTO byNumber(String itemNumber) {
 
         logger.info("items-service byNumber() invoked: " + itemNumber);
@@ -220,7 +238,7 @@ public class ItemService {
         } catch (DataAccessException e) {
             return new ItemDTO(e.getMessage());
         }
-        scheduler.schedule(new ScheduleThread(itemDTO.getExpiring().getTime(), this, item.getId()), itemDTO.getExpiring());
+        scheduler.schedule(new ScheduleThread(itemDTO.getExpiring().getTime(), this, item.getItemId()), itemDTO.getExpiring());
         return new ItemDTO(item);
     }
 

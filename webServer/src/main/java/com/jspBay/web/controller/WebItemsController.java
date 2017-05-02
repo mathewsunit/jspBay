@@ -62,6 +62,17 @@ public class WebItemsController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping("/items/search/{text}")
+    public ResponseEntity<List<ItemDTO>> itemSearch(@PathVariable("text") String name) {
+        logger.info("WebItemsController search() invoked: " + name);
+        List<ItemDTO> items = itemsService.byItemSearchContains(name);
+        logger.info("WebItemsController search() found: " + items);
+        if(null != items){
+            return new ResponseEntity<>(items, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @RequestMapping("/items/bid")
     public ResponseEntity<BidDTO> bidItem(@RequestBody String response) {
         logger.info("WebItemsController bySeller() invoked: " + response);

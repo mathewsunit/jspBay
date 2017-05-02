@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 public class BidController {
 
     protected Logger logger = Logger.getLogger(BidController.class.getName());
-    protected BidRepository bidRepository;
 
     @Autowired
     protected BidService bidService;

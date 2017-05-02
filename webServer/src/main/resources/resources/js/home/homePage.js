@@ -11,6 +11,10 @@ angular.module('home', ['secure-rest-angular','smart-table']).controller('home',
 	$scope.closedBidsDisplay = [];
 	$scope.loginDetails = [];
 
+	$scope.activebidarray = [];
+    $scope.closedbidarray = [];
+
+
 	var userCall = $resource('/user', {}, {
         get: {method: 'GET', cache: false, isArray: false},
         options: {method: 'OPTIONS', cache: false}

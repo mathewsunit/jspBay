@@ -52,12 +52,11 @@ public class WebBidsController {
     }
 
     @RequestMapping("/bids/bidder/{text}")
-    public ResponseEntity<List<BidDTO>> ownerSearch(Model model, @PathVariable("text") String name) {
+    public ResponseEntity<List<BidDTO>> ownerSearch(@PathVariable("text") String name) {
         logger.info("WebBidsController byBidder() invoked: " + name);
 
         List<BidDTO> bids = bidsService.byBidderContains(name);
         logger.info("WebBidsController byBidder() found: " + bids);
-        model.addAttribute("search", name);
         if (bids != null)
             return new ResponseEntity<>(bids, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -55,6 +55,13 @@ public class ItemController {
         return itemService.bySeller(partialName);
     }
 
+    @RequestMapping("/items/search/{name}")
+    public List<ItemDTO> byItemSearch(@PathVariable("name") String partialName) {
+        logger.info("ItemController byItemSearch() invoked for "
+                + partialName);
+        return itemService.byItemSearch(partialName);
+    }
+
     @RequestMapping(value = "/items/create", method = RequestMethod.POST)
     public ItemDTO create(@RequestBody ItemDTO itemDTO) {
         logger.info("ItemController create() invoked for" + itemDTO);

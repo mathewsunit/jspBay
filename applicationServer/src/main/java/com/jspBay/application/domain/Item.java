@@ -1,9 +1,12 @@
 package com.jspBay.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jspBay.application.enums.ItemStatus;
 import org.hibernate.annotations.Check;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,12 +15,14 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "item")
 @Check(constraints = "item_status = 'REMOVED' or game_status = 'ONSALE' or game_status = 'SOLD'")
-public class Item {
+public class Item extends ResourceSupport implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @JsonProperty("id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -46,11 +51,11 @@ public class Item {
     @Column(name = "name", nullable = false)
     private String name;
 
-    public Long getId() {
+    public Long getItemId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setItemId(Long id) {
         this.id = id;
     }
 
@@ -142,5 +147,18 @@ public class Item {
     }
 
     public Item(){
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", buyer='" + buyer.getUserId() + '\'' +
+                ", seller='" + seller.getUserId() + '\'' +
+                ", description='" + description + '\'' +
+                ", expiring='" + expiring + '\'' +
+                ", itemStatus='" + itemStatus + '\'' +
+                ", cost=" + cost +
+                '}';
     }
 }

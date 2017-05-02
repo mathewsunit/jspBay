@@ -34,19 +34,18 @@ import java.util.logging.Logger;
 @Transactional
 public class BidService {
 
-    private final ItemRepository itemRepo;
-    private final UserRepository userRepository;
-    private final BidRepository bidRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    protected Logger logger = Logger.getLogger(BidService.class.getName());
-
+    @Autowired
+    private ItemRepository itemRepo;
 
     @Autowired
-    public BidService(ItemRepository itemRepo, UserRepository userRepo, BidRepository bidRepo) {
-        this.itemRepo = itemRepo;
-        this.userRepository = userRepo;
-        this.bidRepository = bidRepo;
-    }
+    private UserRepository userRepository;
+
+    @Autowired
+    private BidRepository bidRepository;
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    protected Logger logger = Logger.getLogger(BidService.class.getName());
 
     public BidDTO byNumber(@PathVariable("bidNumber") String bidNumber) {
         logger.info("bids-service byNumber() invoked: " + bidNumber);
