@@ -13,6 +13,7 @@
 		    </span>
         </div>
         <br/>
+        <div ng-show="errorMessage.length">{{errorMessage}}</div>
         <div class="col-md-6" id="my_items">
             <h2 style="text-align:center;">My Items</h2>
             <div class="col-md-6" id="my_sold">
@@ -45,7 +46,7 @@
                         <td>{{item.itemDesc}}</td>
                         <td>{{item.expiring | date:'MM-dd HH:mm'}}</td>
                         <td>
-                            <button type="button" ng-click="removeItem(item)" class="btn btn-sm btn-danger">
+                            <button type="button" ng-click="removeItem(item.itemId)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle">
                                 </i>
                             </button>
@@ -74,7 +75,7 @@
                         <td>{{bid.bidStatus}}</td>
                         <td>{{bid.item.expiring | date:'MM-dd HH:mm'}}</td>
                         <td>
-                            <button type="button" ng-click="removeBid(bid)" class="btn btn-sm btn-danger">
+                            <button type="button" ng-click="removeBid(bid.bidId)" class="btn btn-sm btn-danger">
                                 <i class="glyphicon glyphicon-remove-circle">
                                 </i>
                             </button>

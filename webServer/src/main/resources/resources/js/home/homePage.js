@@ -13,6 +13,7 @@ angular.module('home', ['secure-rest-angular','smart-table']).controller('home',
 
 	$scope.activebidarray = [];
     $scope.closedbidarray = [];
+    $scope.errorMessage = null;
 
 
 	var userCall = $resource('/user', {}, {
@@ -37,18 +38,18 @@ angular.module('home', ['secure-rest-angular','smart-table']).controller('home',
       }
     });
 
-    var removeItemResource = $resource('/user/lastlogin/retrieve', {}, {
+    var removeItemResource = $resource('/items/remove', {}, {
         post: {
-        method: 'post',
-        cache: false
-      }
+            method: 'post',
+            cache: false
+        }
     });
 
-    var removeBidResource = $resource('/user/lastlogin/retrieve', {}, {
+    var removeBidResource = $resource('/bids/remove', {}, {
         post: {
-        method: 'post',
-        cache: false
-      }
+            method: 'post',
+            cache: false
+        }
     });
 
 	userCall.get().$promise.then(function(response) {
@@ -120,13 +121,29 @@ angular.module('home', ['secure-rest-angular','smart-table']).controller('home',
             }
         };
 
-        $scope.removeItem = function(itemR)
-        {
+        $scope.removeItem = function(itemId) {
+            removeItemResource.post({'itemId' : itemId}).$promise.then(function(response) {
+                if(response.id == -1) {
+                    console.log("Got error message");
+                    $scope.errorMessage = response.errorMessage;
+                } else {
+                    console.log("item Removed.");
+                    $location.path('/');
+                }
+            }
             console.log('You are goung to remove ',itemR)
         };
 
-        $scope.removeBid = function(bidR)
-        {
-            console.log('You are goung to remove ',bidR)
+        $scope.removeBid = function(bidId) {
+            removeItemResource.post({'bidId' : bidId}).$promise.then(function(response) {
+                if(response.id == -1) {
+                    console.log("Got error message");
+                    $scope.errorMessage = response.errorMessage;
+                } else {
+                    console.log("Bid Removed.");
+                    $location.path('/');
+                }
+            }
+            console.log('You are goung to remove ',itemR)
         };
 });
