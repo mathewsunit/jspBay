@@ -58,4 +58,7 @@ public class UserDTO {
     public UserDTO(String userName) {
         this.userName = userName;
     }
+
+    public UserDTO() {
+    }
 }

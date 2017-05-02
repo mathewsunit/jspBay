@@ -94,6 +94,7 @@ public class WebItemsService {
         } catch (HttpClientErrorException e) { // 404
             // Nothing found
         }
+        logger.info("searchItems() found:  for " + item);
         List<ItemDTO> itemReturns = new ArrayList<>();
         if (item == null || item.length == 0)
             return null;

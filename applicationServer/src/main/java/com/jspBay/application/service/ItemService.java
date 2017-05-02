@@ -26,7 +26,6 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
@@ -95,6 +94,7 @@ public class ItemService {
                 ItemDTO itemDTO = new ItemDTO(item, bids.size() == 1 ? new BidDTO(bids.get(0)) : null);
                 itemsDTO.add(itemDTO);
             }
+            logger.info("items-service itemsDTO() found: " + itemsDTO);
             return itemsDTO;
         }
     }
