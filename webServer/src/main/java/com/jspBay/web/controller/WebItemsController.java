@@ -1,16 +1,21 @@
-package com.jspBay.web.controller;
+    package com.jspBay.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jspBay.web.DTO.BidDTO;
 import com.jspBay.web.DTO.ItemDTO;
+import com.jspBay.web.DTO.ResponseDTO;
 import com.jspBay.web.service.WebItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -40,7 +45,7 @@ public class WebItemsController {
         logger.info("WebItemsController byNumber() invoked: " + itemNumber);
         ItemDTO item = itemsService.findByNumber(itemNumber);
         logger.info("WebItemsController byNumber() found: " + item);
-        if(null != item){
+        if(null != item) {
             return new ResponseEntity<>(item, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -55,6 +60,59 @@ public class WebItemsController {
             return new ResponseEntity<>(items, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping("/items/bid")
+    public ResponseEntity<BidDTO> bidItem(@RequestBody String response) {
+        logger.info("WebItemsController bySeller() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            ItemDTO item = itemsService.findByNumber((String) result.get("itemNumber"));
+            String message = item.getCanUserBid(auth.getName(), Calendar.getInstance().getTime(), result.get("bidAmount").toString());
+            if(message == null) {
+                BidDTO bid = itemsService.bidItem(item, result.get("bidAmount").toString(), auth.getName());
+                logger.info("WebItemsController bySeller() found: " + bid);
+                if(bid != null)
+                    return new ResponseEntity<>(bid, HttpStatus.OK);
+            } else {
+                BidDTO bid = new BidDTO(message);
+                logger.info("WebItemsController bySeller() returning: " + bid.getErrorMessage());
+                return new ResponseEntity<>(bid, HttpStatus.OK);
+            }
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping("/items/create")
+    public ResponseEntity<ItemDTO> createItem(@RequestBody String response) {
+        logger.info("WebItemsController createItem() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            ItemDTO itemDTO = itemsService.createItem(result.get("itemName").toString(), result.get("itemDesc").toString(), result.get("itemDeadline").toString(), result.get("itemCost").toString());
+            logger.info("WebItemsController createItem() returned: " + itemDTO.toString());
+            return new ResponseEntity<>(itemDTO, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/items/remove", method = RequestMethod.POST)
+    public ResponseEntity<ResponseDTO> removeItem(@RequestBody String response) {
+        logger.info("WebItemsController removeItem() invoked: " + response);
+        try {
+            HashMap result = new ObjectMapper().readValue(response, HashMap.class);
+            String itemId = (String) result.get("itemId");
+            ItemDTO itemDTO = itemsService.findByNumber(String.valueOf(itemId));
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            ResponseDTO responseDTO = itemsService.removeItem(itemDTO, auth.getName());
+            logger.info("WebItemsController createItem() returned: " + responseDTO.toString());
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 //    @RequestMapping(value = "/items/search", method = RequestMethod.GET)

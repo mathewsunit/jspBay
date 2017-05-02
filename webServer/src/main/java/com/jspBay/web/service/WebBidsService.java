@@ -1,10 +1,16 @@
 package com.jspBay.web.service;
 
 import com.jspBay.web.DTO.BidDTO;
+import com.jspBay.web.DTO.ResponseDTO;
+import com.jspBay.web.enums.BidStatus;
 import com.jspBay.web.exceptions.BidNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -60,8 +66,8 @@ public class WebBidsService {
         BidDTO[] bid = null;
 
         try {
-            bid = restTemplate.getForObject(serviceUrl
-                    + "/bid/bidder/{name}", BidDTO[].class, name);
+            bid = restTemplate.getForObject(serviceUrl + "/bids/bidder/{name}", BidDTO[].class, name);
+
         } catch (HttpClientErrorException e) { // 404
             // Nothing found
         }
@@ -73,12 +79,20 @@ public class WebBidsService {
     }
 
     public BidDTO getByNumber(String bidNumber) {
-        BidDTO account = restTemplate.getForObject(serviceUrl
-                + "/bid/{number}", BidDTO.class, bidNumber);
+        BidDTO account = restTemplate.getForObject(serviceUrl + "/bids/{number}", BidDTO.class, bidNumber);
 
         if (account == null)
             throw new BidNotFoundException(bidNumber);
         else
             return account;
+    }
+
+    public ResponseDTO removeItem(BidDTO bidDTO, String currentUserName) {
+        if(!bidDTO.getBidder().getUserName().equals(currentUserName))
+            return new ResponseDTO<>("ERROR", "You are not authorized to remove this bid as you are not the bidder.");
+        else if(bidDTO.getBidStatus() != BidStatus.LEADING)
+            return new ResponseDTO<>("ERROR", "You cannot remove a bid on a sold item or already removed bid.");
+        else
+            return restTemplate.exchange(serviceUrl + "/bids/remove", HttpMethod.POST, new HttpEntity<>(new ResponseDTO<BidDTO>("SUCCESS", "Successfully called web server", bidDTO)), new ParameterizedTypeReference<ResponseDTO<BidDTO>>() {}).getBody();
     }
 }

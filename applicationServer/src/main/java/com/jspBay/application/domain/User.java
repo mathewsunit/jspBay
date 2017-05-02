@@ -20,7 +20,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private int id;
+    private Long id;
 
     @Column(name = "user_name", unique = true, nullable = false, length=127)
     private String userName;
@@ -31,11 +31,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
