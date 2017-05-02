@@ -8,5 +8,5 @@ public enum BidStatus {
     ACCEPTED,
     REJECTED,
     LEADING,
-    DELETED,
+    DELETED
 }

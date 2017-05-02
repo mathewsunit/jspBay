@@ -3,7 +3,6 @@ package com.jspBay.application.service;
 import com.jspBay.application.DTO.BidDTO;
 import com.jspBay.application.DTO.ItemDTO;
 import com.jspBay.application.DTO.ResponseDTO;
-import com.jspBay.application.DTO.UserDTO;
 import com.jspBay.application.domain.Bid;
 import com.jspBay.application.domain.Item;
 import com.jspBay.application.domain.User;
@@ -113,6 +112,8 @@ public class ItemService {
 	public ResponseDTO<ItemDTO> removeItem(ItemDTO object) {
         Item item = itemRepository.findOneById(object.getItemId());
         item.setItemStatus(ItemStatus.REMOVED);
+        int bidCount = bidRepository.setFixedBidStatusForItem(BidStatus.DELETED, item);
+        logger.info("Status changed to deleted for " + bidCount + " bids related to this item.");
         /*
             Remove threads.
         */
