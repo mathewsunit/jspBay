@@ -37,11 +37,11 @@ public class User extends ResourceSupport implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public Long getId() {
+    public Long getUserId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setUserId(Long id) {
         this.id = id;
     }
 

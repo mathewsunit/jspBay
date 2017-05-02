@@ -55,7 +55,7 @@ public class Item extends ResourceSupport implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setItemId(Long id) {
         this.id = id;
     }
 

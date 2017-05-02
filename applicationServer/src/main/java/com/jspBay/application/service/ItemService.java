@@ -110,9 +110,9 @@ public class ItemService {
             throw new ItemNotFoundException(partialName);
         else {
             for(Item item:items){
-                ItemDTO itemDTO = new ItemDTO(item.getCost(),item.getName(),item.getDescription(),item.getExpiring(),item.getItemStatus());
+                ItemDTO itemDTO = new ItemDTO(item);
                 itemsDTO.add(itemDTO);
-            };
+            }
             return itemsDTO;
         }
     }
@@ -238,7 +238,7 @@ public class ItemService {
         } catch (DataAccessException e) {
             return new ItemDTO(e.getMessage());
         }
-        scheduler.schedule(new ScheduleThread(itemDTO.getExpiring().getTime(), this, item.getId()), itemDTO.getExpiring());
+        scheduler.schedule(new ScheduleThread(itemDTO.getExpiring().getTime(), this, item.getItemId()), itemDTO.getExpiring());
         return new ItemDTO(item);
     }
 
